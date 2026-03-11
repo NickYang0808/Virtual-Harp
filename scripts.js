@@ -85,7 +85,7 @@ window.switchSong = async function (selectedSong) {
       setTimeout(tryCueVideo, 500);
     }
   };
-
+  const infoContainer = document.querySelector('.song-info');
 
   // 1. 先顯示基本標題
   if (infoContainer) {
