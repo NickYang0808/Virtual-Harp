@@ -40,34 +40,35 @@ function getActiveChord(videoCurrentTime, midiData) {
 
 // --- 3. YouTube API (必須在最外層) ---
 
-function onYouTubeIframeAPIReady() {
-    console.log("🎬 YouTube API 腳本已載入，開始初始化 Player...");
+// --- 3. YouTube API ---
+// 修改這裡：強制掛載到全域 window 物件
+window.onYouTubeIframeAPIReady = function() {
+    console.log("🚀 [Critical] YouTube API 偵測到全域函式，開始初始化...");
 
     const selector = document.getElementById('songSelector');
     const selectedIndex = selector ? selector.selectedIndex : 0;
     
+    // 檢查 IMUSE_SONGS 是否存在
     if(typeof IMUSE_SONGS !== 'undefined' && IMUSE_SONGS[selectedIndex]){
         const selectedSong = IMUSE_SONGS[selectedIndex];
         const targetVideoId = getYouTubeID(selectedSong.youtubeUrl);
 
         player = new YT.Player('player', {
-        height: '240',
-        width: '400',
-        videoId: targetVideoId, // 如果解析失敗則用...
-        playerVars: { 
-            'playsinline': 1,
-            'enablejsapi': 1,
-            'origin': window.location.origin 
-        },
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-        }
-    });
-    } else{
-        console.warn("IMUSE_SONGS no INDEX!!!!!!");
+            height: '240',
+            width: '400',
+            videoId: targetVideoId,
+            playerVars: { 
+                'playsinline': 1,
+                'enablejsapi': 1,
+                'origin': window.location.origin 
+            },
+            events: {
+                'onReady': onPlayerReady, // 這裡觸發 isPlayerReady = true
+                'onStateChange': onPlayerStateChange
+            }
+        });
     }
-}
+};
 
 function onPlayerReady(event) {
     isPlayerReady = true;
