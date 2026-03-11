@@ -98,7 +98,7 @@
   box-sizing: border-box;
   width:80%;
   height:80%;
-  border:5px solid red;
+  border:5px solid rgb(86, 231, 231);
 }
 
 /* 手機版適配：若螢幕太窄，改為垂直排列 */
