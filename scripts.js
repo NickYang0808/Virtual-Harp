@@ -18,9 +18,7 @@ let smoothFrame = {
 const SMOOTH_FACTOR = 0.15; 
 
 // --- 2. 工具函數 ---
-function getYoutubeId(url) {
-    if (!url) return null;
-    // 這個正規表示法支援 watch?v=, youtu.be/, embed/ 等所有格式
+function getYouTubeID(url) {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
@@ -40,14 +38,21 @@ function getActiveChord(videoCurrentTime, midiData) {
 }
 
 // --- 3. YouTube API (必須在最外層) ---
-// 1. 強制讓它變成全域 Window 屬性
-window.onYouTubeIframeAPIReady = function() {
+
+function onYouTubeIframeAPIReady() {
     console.log("🎬 YouTube API 腳本已載入，開始初始化 Player...");
+
+    const selector = document.getElementById('songSelector');
+    const selectedIndex = selector ? selector.selectedIndex : 0;
     
-    player = new YT.Player('player', {
+    if(typeof IMUSE_SONGS !== 'undefined' && IMUSE_SONGS[selectedIndex]){
+        const selectedSong = IMUSE_SONGS[selectedIndex];
+        const targetVideoId = getYouTubeID(selectedSong.youtubeUrl);
+
+        player = new YT.Player('player', {
         height: '240',
         width: '400',
-        videoId: '9bZkp7q19f0', // 先放一個確定能播的 ID (測試用)
+        videoId: targetVideoId, // 如果解析失敗則用...
         playerVars: { 
             'playsinline': 1,
             'enablejsapi': 1,
@@ -58,16 +63,19 @@ window.onYouTubeIframeAPIReady = function() {
             'onStateChange': onPlayerStateChange
         }
     });
-};
+    } else{
+        console.warn("IMUSE_SONGS no INDEX!!!!!!");
+    }
+}
 
 function onPlayerReady(event) {
     isPlayerReady = true;
     console.log("✅ ✅ ✅ 播放器真的就緒了！");
 }
-
 function onPlayerStateChange(event) {
     isVideoPlaying = (event.data === YT.PlayerState.PLAYING);
 }
+
 // --- 4. 核心邏輯 onResults ---
 async function onResults(results) {
   if (!canvasCtx || !results.poseLandmarks) return;
@@ -161,11 +169,24 @@ window.onload = () => {
     width: 1280, height: 640
   });
   camera.start();
-  window.switchSong = async function(selectedSong) {
+
+  const selector = document.getElementById('songSelector');
+  if(selector){
+    selector.addEventListener('change',(e)=>{
+        const index=e.target.value;
+        if(typeof IMUSE_SONGS !== 'undefined' && IMUSE_SONGS[index]){
+            window.switchSong(IMUSE_SONGS[index]);
+        }
+    });
+  }
+}
+
+window.switchSong = async function(selectedSong) {
     if (!selectedSong) return;
-    
+
     console.log("🎵 開始換歌流程：", selectedSong.title);
-    const vId = getYoutubeId(selectedSong.youtubeUrl);
+
+    const vId = getYouTubeID(selectedSong.youtubeUrl);
 
     const tryCueVideo = () => {
         if (isPlayerReady && player && typeof player.cueVideoById === 'function') {
@@ -178,17 +199,17 @@ window.onload = () => {
     };
 
     try {
-        // 執行 MIDI 解析 (這是你原本 scripts.js 的核心邏輯)
-        currentMidiData = await loadAndAnalyzeMidi(selectedSong.url, selectedSong.firstBeatOffset || 0);
-        
-        // 執行 YouTube 換歌
-        tryCueVideo();
+    // 執行 MIDI 解析 (這是你原本 scripts.js 的核心邏輯)
+    currentMidiData = await loadAndAnalyzeMidi(selectedSong.url, selectedSong.firstBeatOffset || 0);
+
+    // 執行 YouTube 換歌
+    tryCueVideo();
     } catch (err) {
-        console.error("載入流程錯誤", err);
+    console.error("載入流程錯誤", err);
     }
 };
 
-};
+
 
 
 //-----------繪圖相關---------//
@@ -292,4 +313,3 @@ function safeNormalize(v) {
     const len = Math.hypot(v.x, v.y);
     return len < 1e-6 ? v : { x: v.x / len, y: v.y / len };
 }
-
