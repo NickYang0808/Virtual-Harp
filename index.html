@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Virtual Harp</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="media.css">
+
+    </head>
+    
+    <body>
+        <div class="main">
+            <div class="song-selector">
+            <div id="player"></div>
+            <div class="playlist" id="songList"></div>  
+
+            </div>
+            <div class="canvas">
+                <video class="input_video" style="display:none;position:absolute" ></video>
+                <canvas class="output_canvas"></canvas>
+            </div>
+            <div class="right">
+                
+            </div>
+        </div>
+        <div class="function">
+            <div id="midi-info-display" style="position: absolute; top: 20px; right: 20px; z-index: 100;">
+            </div>
+        </div>
+        
+        <!--js src-->
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/webmidi@3.1.1/dist/iife/webmidi.iife.js"></script>
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <script src="https://unpkg.com/tone"></script>
+        <script src="https://unpkg.com/@tonejs/midi"></script>
+        <script src="song.js"></script><script src="roll.js"></script>
+        <script src="midiHandler.js"></script>
+        <script src="harp.js"></script>
+        <script src="skeletons.js"></script>
+        <script src="scripts.js"></script>
+    </body>
+</html>

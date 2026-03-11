@@ -1,0 +1,71 @@
+// const IMUSE_SONGS = [
+//   { "title": "月亮代表我的心 part1", "category": "華語歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/月亮代表我的心part1.mid" },
+//   { "title": "月亮代表我的心 part2", "category": "華語歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/月亮代表我的心part2.mid" },
+//   { "title": "我是真的付出我的愛", "category": "華語歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/我是真的付出我的愛.mid" },
+//   { "title": "耶穌恩友(排灣族語)", "category": "原民歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/耶穌恩友(排灣族語).mid" },
+//   { "title": "耶穌恩友", "category": "原民歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/耶穌恩友.mid" },
+//   { "title": "軍紀歌", "category": "華語歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/軍紀歌.mid" },
+//   { "title": "中華民國軍樂起床號", "category": "無歌詞", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/中華民國軍樂起床號.mid" },
+//   { "title": "白鷺鷥", "category": "台語歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/白鷺鷥.mid" },
+//   { "title": "祝你幸福", "category": "華語歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/祝你幸福.mid" },
+//   { "title": "朋友", "category": "華語歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/朋友.mid" },
+//   { "title": "忘了你忘了我", "category": "華語歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/忘了你忘了我.mid" },
+//   { "title": "Call Me Maybe", "category": "英文歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/Call_Me_Maybe.mid" }
+// ];
+
+const IMUSE_SONGS=[
+    {
+        title: "朋友", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    },
+        {
+        title: "g", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    },
+        {
+        title: "hi", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    },
+            {
+        title: "hi", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    },
+            {
+        title: "hi", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    },
+            {
+        title: "hi", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    },
+            {
+        title: "hi", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    },
+            {
+        title: "hi", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    },
+            {
+        title: "hi", "category": "華語歌曲", 
+        url: "./midi/朋友.mid",
+        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
+        firstBeatOffset:2.5
+    }
+]
