@@ -1,100 +1,100 @@
 .main {
-    display: flex;
-    width: 100vw;
-    height: 70vh; /* 你原本設定的高度 */
-    background-color: #ffffff;
-    align-items: stretch;
-    justify-content: space-between;
-    padding: 0 20px;
-    box-sizing: border-box;
-    gap: 20px; /* 元素間的固定間距 */
+  display: flex;
+  width: 100vw;
+  height: 70vh; /* 你原本設定的高度 */
+  background-color: #ffffff;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+  gap: 20px; /* 元素間的固定間距 */
 }
 
 /* 左側：歌單選單 */
 /* 左側：調整為垂直佈局 */
 .song-selector {
-    flex: 0 0 20%; /* 建議調到 20% 左右，寬度比較剛好 */
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* 確保撐滿 main 的高度 */
-    /* 加上你要求的邊框 */
-    border: 10px solid #40e9ff; 
-    border-radius: 8px;
-    box-sizing: border-box;
-    overflow: hidden; /* 確保內部元件不會超出邊框 */
+  flex: 0 0 20%; /* 建議調到 20% 左右，寬度比較剛好 */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* 確保撐滿 main 的高度 */
+  /* 加上你要求的邊框 */
+  border: 10px solid #40e9ff;
+  border-radius: 8px;
+  box-sizing: border-box;
+  overflow: hidden; /* 確保內部元件不會超出邊框 */
 }
 #player {
-    flex: 0 0 auto; /* 播放器保持固定高度，不被壓縮 */
-    width: 100% !important;
-    height: 240px !important; 
-    margin-bottom: 0px;
-    border: 2px solid #00e5ff; /* 加個紅框看看它到底在哪 */
+  flex: 0 0 auto; /* 播放器保持固定高度，不被壓縮 */
+  width: 100% !important;
+  height: 240px !important;
+  margin-bottom: 0px;
+  border: 2px solid #00e5ff; /* 加個紅框看看它到底在哪 */
 }
-#songList{
-    flex-grow: 1;
-    overflow-y: auto;
-    background-color: #1a1a1a; /* 建議深色，更有播放器的質感 */
-    min-height: 0; /* 重要：防止 flex 項目被內容撐破 */
+#songList {
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #1a1a1a; /* 建議深色，更有播放器的質感 */
+  min-height: 0; /* 重要：防止 flex 項目被內容撐破 */
 }
 /* 滑鼠移入的效果 */
 .playlist-item {
-    padding: 12px 15px;
-    color: #ffffff; /* 強制文字為白色，解決看不到的問題 */
-    font-size: 16px;
-    cursor: pointer;
-    border-bottom: 1px solid #333;
-    transition: all 0.2s;
-    text-align: left; /* 確保文字靠左 */
+  padding: 12px 15px;
+  color: #ffffff; /* 強制文字為白色，解決看不到的問題 */
+  font-size: 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #333;
+  transition: all 0.2s;
+  text-align: left; /* 確保文字靠左 */
 }
 .playlist-item:hover {
-    background-color: #333;
-    color: #fff;
+  background-color: #333;
+  color: #fff;
 }
 .playlist-item.active {
-    background-color: #444;
-    color: #00e5ff;
-    border-left: 4px solid #00e5ff;
-    font-weight: bold;
+  background-color: #444;
+  color: #00e5ff;
+  border-left: 4px solid #00e5ff;
+  font-weight: bold;
 }
 /* 特效*/
 
-
 /* 中間：畫布區域 (核心) */
 .canvas {
-    flex: 1; /* 自動撐開，佔據剩餘最大空間 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    height: 100%;
+  flex: 1; /* 自動撐開，佔據剩餘最大空間 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
 }
 
 .output_canvas {
-    max-width: 100%;
-    max-height: 100%;
-    aspect-ratio: 1280 / 640; /* 維持你設定的 2:1 解析度比例 */
-    object-fit: contain;
-    transform: scaleX(-1);
-    border: 2px solid rgb(86, 231, 231);
-    background-color: #ffffff;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1280 / 640; /* 維持你設定的 2:1 解析度比例 */
+  object-fit: contain;
+  transform: scaleX(-1);
+  border: 2px solid rgb(86, 231, 231);
+  background-color: #ffffff;
 }
 
 /* 右側：額外資訊（如目前的和弦或樂譜） */
 .right {
-    flex: 0 0 15%; /* 固定佔 15% 寬度 */
-    height: 100%;
-    border-left: 1px solid #ffffff;
-    padding-left: 10px;
+  flex: 0 0 15%; /* 固定佔 15% 寬度 */
+  height: 100%;
+  border-left: 1px solid #ffffff;
+  padding-left: 10px;
 }
 
 /* 手機版適配：若螢幕太窄，改為垂直排列 */
 @media (max-width: 768px) {
-    .main {
-        flex-direction: column;
-        height: auto;
-    }
-    .song-selector, .right {
-        width: 100%;
-        flex: none;
-    }
+  .main {
+    flex-direction: column;
+    height: auto;
+  }
+  .song-selector,
+  .right {
+    width: 100%;
+    flex: none;
+  }
 }

@@ -13,59 +13,68 @@
 //   { "title": "Call Me Maybe", "category": "英文歌曲", "url": "https://imuse.ncnu.edu.tw/Midi-library/files/Call_Me_Maybe.mid" }
 // ];
 
-const IMUSE_SONGS=[
-    {
-        title: "朋", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
-        firstBeatOffset:2.5
-    },
-        {
-        title: "g", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://youtu.be/xFTXwNIU514?si=lG8pOUJ5H4FuDJpZ",
-        firstBeatOffset:2.5
-    },
-        {
-        title: "laufey", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://www.youtube.com/watch?v=avjI3_GIZBw",
-        firstBeatOffset:2.5
-    },
-            {
-        title: "shinunoga", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://www.youtube.com/watch?v=lRVJuPI5IXI",
-        firstBeatOffset:2.5
-    },
-            {
-        title: "hi", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
-        firstBeatOffset:2.5
-    },
-            {
-        title: "hi", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
-        firstBeatOffset:2.5
-    },
-            {
-        title: "hi", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
-        firstBeatOffset:2.5
-    },
-            {
-        title: "hi", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
-        firstBeatOffset:2.5
-    },
-            {
-        title: "hi", "category": "華語歌曲", 
-        url: "./midi/朋友.mid",
-        youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
-        firstBeatOffset:2.5
-    }
-]
+const IMUSE_SONGS = [
+  {
+    title: "朋",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    firstBeatOffset: 2.5,
+  },
+  {
+    title: "g",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://youtu.be/xFTXwNIU514?si=lG8pOUJ5H4FuDJpZ",
+    firstBeatOffset: 2.5,
+  },
+  {
+    title: "laufey",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=avjI3_GIZBw",
+    firstBeatOffset: 2.5,
+  },
+  {
+    title: "shinunoga",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=lRVJuPI5IXI",
+    firstBeatOffset: 2.5,
+  },
+  {
+    title: "hi",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    firstBeatOffset: 2.5,
+  },
+  {
+    title: "hi",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    firstBeatOffset: 2.5,
+  },
+  {
+    title: "hi",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    firstBeatOffset: 2.5,
+  },
+  {
+    title: "hi",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    firstBeatOffset: 2.5,
+  },
+  {
+    title: "hi",
+    category: "華語歌曲",
+    url: "./midi/朋友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+    firstBeatOffset: 2.5,
+  },
+];
