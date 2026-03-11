@@ -99,6 +99,7 @@ async function loadAndAnalyzeMidi(midiUrl, firstBeatOffset = 0) {
     console.log(
       `- 狀態判定: ${hasLeftHand ? "✅ 軌道解析成功" : "❌ 無有效音符"}`,
     );
+    console.log(`音符總數：${totalNotes}`);
     console.log(
       `- 第一個和弦影片觸發點: ${progression.length > 0 ? progression[0].videoTime.toFixed(2) : "N/A"} 秒`,
     );
