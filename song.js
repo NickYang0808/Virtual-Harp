@@ -15,7 +15,7 @@
 
 const IMUSE_SONGS=[
     {
-        title: "朋友", "category": "華語歌曲", 
+        title: "朋朋", "category": "華語歌曲", 
         url: "./midi/朋友.mid",
         youtubeUrl:"https://www.youtube.com/watch?v=9bZkp7q19f0",
         firstBeatOffset:2.5
