@@ -86,12 +86,25 @@
   padding-left: 10px;
 }
 .function{
-  width: 90vw;
+  width: 100vw;
   height:30vh;
   background-color: aliceblue;
   border-top: 4px solid #40e9ff;
-} 
 
+  padding: 20px 40px;
+  box-sizing: border-box;
+
+  color: #00e5ff;
+  display: flex;
+  flex-direction: row;
+  gap:30px;
+} 
+/* 確保內部資訊不要貼著邊緣 */
+#song-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 
 
