@@ -85,6 +85,15 @@
   border-left: 1px solid #ffffff;
   padding-left: 10px;
 }
+.function{
+  width: 100vw;
+  height:30vh;
+  background-color: aliceblue;
+  border-top: 4px solid #40e9ff;
+} 
+
+
+
 
 /* 手機版適配：若螢幕太窄，改為垂直排列 */
 @media (max-width: 768px) {

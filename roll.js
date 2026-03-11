@@ -1,7 +1,3 @@
-// roll.js
-
-// roll.js
-
 function initPlaylist(songs) {
   const playlistContainer = document.getElementById("songList");
   if (!playlistContainer) return;
