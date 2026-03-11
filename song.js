@@ -15,66 +15,38 @@
 
 const IMUSE_SONGS = [
   {
-    title: "朋",
+    title: "月亮代表我的心",
     category: "華語歌曲",
-    url: "./midi/朋友.mid",
-    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
-    firstBeatOffset: 2.5,
-  },
-  {
-    title: "g",
-    category: "華語歌曲",
-    url: "./midi/朋友.mid",
-    youtubeUrl: "https://youtu.be/xFTXwNIU514?si=lG8pOUJ5H4FuDJpZ",
-    firstBeatOffset: 2.5,
-  },
-  {
-    title: "laufey",
-    category: "華語歌曲",
-    url: "./midi/朋友.mid",
-    youtubeUrl: "https://www.youtube.com/watch?v=avjI3_GIZBw",
-    firstBeatOffset: 2.5,
-  },
-  {
-    title: "shinunoga",
-    category: "華語歌曲",
-    url: "./midi/朋友.mid",
-    youtubeUrl: "https://www.youtube.com/watch?v=lRVJuPI5IXI",
-    firstBeatOffset: 2.5,
-  },
-  {
-    title: "moon",
-    category: "華語歌曲",
-    url: "./midi/朋友.mid",
+    url: "./midi/月亮代表我的心.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=IiFm7AWP9n4",
-    firstBeatOffset: 2.5,
+    firstBeatOffset: 2.5, //0:0.5秒左右
   },
   {
-    title: "hi34",
+    title: "聽海",
     category: "華語歌曲",
-    url: "./midi/朋友.mid",
-    youtubeUrl: "https://www.youtube.com/watch?v=IiFm7AWP9n4",
-    firstBeatOffset: 2.5,
+    url: "./midi/聽海.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=mLk61pfiHQ0",
+    firstBeatOffset: 2.5, //約0:13秒左右
   },
   {
-    title: "hi",
+    title: "傷心酒店",
     category: "華語歌曲",
-    url: "./midi/朋友.mid",
-    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
-    firstBeatOffset: 2.5,
+    url: "./midi/傷心酒店.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=Jl0CAEZn9II",
+    firstBeatOffset: 2.5, //約0:17秒左右
   },
   {
-    title: "hi",
-    category: "華語歌曲",
-    url: "./midi/朋友.mid",
-    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
-    firstBeatOffset: 2.5,
+    title: "耶穌恩友（排灣族語）",
+    category: "原民歌曲",
+    url: "./midi/耶穌恩友.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=zriDaxBh5mo",
+    firstBeatOffset: 2.5, //約0:0.5秒左右
   },
   {
-    title: "hi",
+    title: "耶和華祝福滿滿",
     category: "華語歌曲",
-    url: "./midi/朋友.mid",
-    youtubeUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
-    firstBeatOffset: 2.5,
+    url: "./midi/耶和華祝福.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=OD7Pvwz4cjY",
+    firstBeatOffset: 2.5, //約0:8秒左右
   },
 ];
