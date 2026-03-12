@@ -171,13 +171,19 @@ function chordAnalyze(notes) {
       
     case "4-7-10": // 跟音、大三度、五度、小七度
       return `${rootName}7`;
+    case "2-5-10": // 跟音、大三度、五度、小七度
+      return `${rootName}9sus4`;
+
 
     // 如果之後有 3 音的和弦 (無八度) 也可以在這邊補
     case "4-7": 
       return `${rootName}`;
     case "3-7":
       return `${rootName}m`;
+    case "4-8":
+      return `${rootName}aug`;
 
+      
     default:
       return `${rootName}?`; // 若不符合上述規則，僅顯示根音名稱
   }
