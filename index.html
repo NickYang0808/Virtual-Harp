@@ -19,7 +19,7 @@
                 <canvas class="output_canvas"></canvas>
             </div>
             <div class="right">
-                
+                <div id="composer-slot"></div>
             </div>
         </div>
         <div class="function">
@@ -28,18 +28,25 @@
            </div>
         </div>
         
-        <!--js src-->
+        <!--mediapipe src-->
         <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/webmidi@3.1.1/dist/iife/webmidi.iife.js"></script>
-        
+        <!--web synth-->
+        <script type="module">
+        import MidiSynth from 'https://tsai1010.github.io/scripts/midisynth-gui.js';
+        window.sunth = new MidiSynth('#composer-slot');
+        </script>
+        <!--tone.js-->
         <script src="https://unpkg.com/tone"></script>
         <script src="https://unpkg.com/@tonejs/midi"></script>
+        <!--self js file-->
         <script src="song.js"></script><script src="roll.js"></script>
         <script src="midiHandler.js"></script>
         <script src="harp.js"></script>
         <script src="skeletons.js"></script>
         <script src="scripts.js?v=0.0.2"></script>
+        <!--youtube-->
         <script src="https://www.youtube.com/iframe_api"></script>
     </body>
 </html>

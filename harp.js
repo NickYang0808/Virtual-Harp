@@ -79,9 +79,16 @@ class Harp {
   }
 
   _triggerString(index, chord, output) {
-      const note = (chord && chord.notes) ? chord.notes[index] : null;
+    //寫和弦四音對應mapping 7弦處
+    const note = (chord && chord.notes) ? chord.notes[index] : null;
+
+    if(note){
+      sendMidiToSynth(note);
+      //debug用
       if (output && note) output.playNote(note, 1, { duration: 500 }); 
-      this.strings[index].brightness = 1.0; 
-      this.strings[index].offset = (Math.random() - 0.5) * 0.06;
+    }
+    //visual feedback
+    this.strings[index].brightness = 1.0; 
+    this.strings[index].offset = (Math.random() - 0.5) * 0.06;
   }
 }
