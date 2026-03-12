@@ -64,7 +64,14 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-  isVideoPlaying = event.data === YT.PlayerState.PLAYING;
+  if(event.data==YT.PlayerState.PLAYING){
+    console.log("START VIDEO");
+    updateVideoCounter();
+  }else{
+    console.log("VIDEO PAUSE OR STOP");
+    cancelAnimationFrame(timeRequestId);
+  }
+  //isVideoPlaying = event.data === YT.PlayerState.PLAYING;
 }
 
 // --- 4. 換歌邏輯 (放在最外層，確保 Selector 叫得到) ---
@@ -86,23 +93,25 @@ window.switchSong = async function (selectedSong) {
     }
   };
   const infoContainer = document.querySelector('.song-info');
-
-  // 1. 先顯示基本標題
   if (infoContainer) {
-    infoContainer.innerHTML = `
-      <h2 style="margin:0; font-size: 28px;">${selectedSong.title}</h2>
-      <p id="song-bpm-display" style="margin:5px 0 0 0; color: #666;">BPM: 解析中...</p>
-    `;
+      infoContainer.innerHTML = `
+        <h2 style="margin:0; font-size: 28px;">${selectedSong.title}</h2>
+        <p id="song-bpm-display" style="margin:5px 0 0 0; color: #666;">BPM: 解析中...</p>
+        <div id="timer-container" style="font-family: monospace; font-size: 1.2rem; color: #40e9ff; margin-top: 10px;">
+          Time: <span id="video-current-time">0.00</span> s
+        </div>
+      `;
   }
   try {
     currentMidiData = await loadAndAnalyzeMidi(
       selectedSong.url,
       selectedSong.firstBeatOffset || 0,
     );
-    const bpmValue=currentMidiData.bpm;
-
+    
     const bpmDisplay=document.getElementById('song-bpm-display');
-    if(bpmDisplay) bpmDisplay.innerText = `BPM: ${bpmValue} | 左手判定: ${currentMidiData.hasLeftHand ? "✅" : "❌"}`;
+    
+    if(bpmDisplay) bpmDisplay.innerText = `BPM: ${currentMidiData.bpm} | 音符: ${currentMidiData.totalNotes}`;
+    
     tryCueVideo();
   } catch (err) {
     console.error("切換失敗", err);
@@ -151,6 +160,21 @@ window.onload = () => {
     });
   }
 };
+//對齊影片
+let timeRequestId;
+
+function updateVideoCounter(){
+  if(player&& typeof player.getCurrentTime==="function"){
+    const currentTime = player.getCurrentTime();
+    const timeDisplay = document.getElementById('video-current-time');
+
+    if(timeDisplay){
+      timeDisplay.innertext=currentTime.toFixed(2);
+    }
+    //check MIDI event
+  }
+  timeRequestId=requestAnimationFrame(updateVideoCounter);
+}
 
 // --- 6. 核心計算 (保留你原本的所有主程式邏輯) ---
 async function onResults(results) {
