@@ -70,8 +70,8 @@ class Harp {
     const px = frame.center.x + frame.forward2D.x * (this.spacing * index + this.baseOffset + visualOffset);
     const py = frame.center.y + frame.forward2D.y * (this.spacing * index + this.baseOffset);
     // 定義向上與向下的延伸比例 (總長度為 this.length)
-    const upRatio = 0.7;   // 向上延伸 70%
-    const downRatio = 0.3; // 向下延伸 30%
+    const upRatio = 0.8;   
+    const downRatio = 0.2; 
     return {
       // 起點 (x1, y1)：從中心點往「反方向 (上)」延伸 70% 的長度
       x1: (px - frame.stringDir2D.x * (this.length * upRatio)) + visualOffset * frame.forward2D.y,
