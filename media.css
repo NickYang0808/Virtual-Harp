@@ -1,80 +1,81 @@
-/* 1. 基礎變數與重設 */
+/* 定義木質調變數 */
 :root {
-    --neon-blue: #40e9ff;
-    --dark-bg: #0f1215;
+    --wood-dark: #2c1e14;      /* 深胡桃木 */
+    --wood-medium: #5d3a1a;    /* 溫暖柚木 */
+    --wood-light: #8b5a2b;     /* 亮橡木 */
+    --paper-white: #f5f2e8;    /* 羊皮紙色文字 */
+    --accent-gold: #d4af37;    /* 金色重點色 (取代藍色) */
 }
 
-/* 2. 佈局微調：處理原本 Bootstrap 沒蓋到的部分 */
+body {
+    background-color: #1a120b; /* 極深木紋底色 */
+    color: var(--paper-white);
+    font-family: 'JetBrains Mono', 'PingFang TC', sans-serif;
+    overflow-x: hidden;
+}
+
+/* 2. 佈局容器 (搬移自 HTML style) */
 .main-container {
-    padding: 0 15px;
+    height: 75vh;
+    padding-top: 20px;
 }
 
-/* 確保 YouTube 播放器 100% 寬度 */
-#player {
-    width: 100% !important;
-    border: 2px solid var(--neon-blue);
-    border-radius: 8px;
+/* 3. 側邊面板：改為深木色質感 */
+.side-panel {
+    background: rgba(44, 30, 20, 0.85) !important; /* 深木色透明 */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 90, 43, 0.3);
+    border-radius: 15px;
+    height: 100%;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* 歌單滾動條美化 (資工人必備) */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--neon-blue);
-    border-radius: 3px;
+/* 4. 畫布區域：給它一個相框感 */
+.canvas-wrapper {
+    background: #000;
+    border-radius: 15px;
+    border: 8px solid var(--wood-medium); /* 像畫框一樣 */
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5);
+    overflow: hidden;
+    position: relative;
 }
 
-/* 3. 畫布區域 (核心) */
 .output_canvas {
     max-width: 100%;
     max-height: 100%;
-    /* 這裡保留你原本的比例邏輯，但讓它更彈性 */
     aspect-ratio: 1280 / 640; 
     object-fit: contain;
-    transform: scaleX(-1); /* 鏡像 */
-    border: 1px solid rgba(64, 233, 255, 0.5);
-    background-color: #000;
+    transform: scaleX(-1);
+    /* 去掉藍色發光，改為淡淡的古銅光 */
+    border: 1px solid var(--accent-gold);
 }
 
-/* 4. 歌單項目樣式：搭配 Bootstrap 的類別 */
+/* 5. 歌單美化 */
 .playlist-item {
-    padding: 10px 15px;
-    color: #ccc;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
+    padding: 12px 15px;
+    color: #b5a48b;
+    border-bottom: 1px solid rgba(139, 90, 43, 0.2);
 }
 
 .playlist-item:hover {
-    background: rgba(64, 233, 255, 0.1);
-    color: var(--neon-blue);
+    background: rgba(139, 90, 43, 0.2);
+    color: var(--paper-white);
 }
 
 .playlist-item.active {
-    background: rgba(64, 233, 255, 0.2);
-    color: var(--neon-blue);
-    border-left: 4px solid var(--neon-blue);
-    font-weight: bold;
+    background: var(--wood-medium);
+    color: var(--accent-gold);
+    border-left: 4px solid var(--accent-gold);
 }
 
-/* 5. 下方歌曲資訊區域 */
+/* 6. 下方資訊區：古籍感 */
 .song-info {
-    transition: all 0.5s ease;
+    background: rgba(44, 30, 20, 0.6);
+    border: 2px solid var(--wood-medium);
+    border-radius: 12px;
 }
 
-#timer-container {
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 1px;
-}
-
-/* 6. 特殊：MidiSynth 容器微調 */
-#composer-slot {
-    min-height: 250px;
-    /* 確保 GUI 不會撐破外殼 */
-    overflow-x: hidden; 
+/* 7. 滾動條：木質調配色 */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--wood-light);
 }
