@@ -1,61 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
     <head>
         <title>Virtual Harp</title>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="media.css">
 
+        <style>
+        body {
+            background-color: #0f1215;
+            color: #e0e0e0;
+            font-family: 'JetBrains Mono', sans-serif;
+            overflow-x: hidden;
+        }
+        /* 讓內容高度更貼合螢幕 */
+        .main-container {
+            height: 75vh;
+            padding-top: 20px;
+        }
+        /* 畫布區域美化 */
+        .canvas-wrapper {
+            background: #000;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(64, 233, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        /* 歌單與右側面板美化 */
+        .side-panel {
+            background: rgba(33, 37, 41, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            height: 100%;
+        }
+    </style>
     </head>
     
     <body>
-        <div class="main">
-            <div class="song-selector">
-            <div id="player"></div>
-            <div class="playlist" id="songList"></div>  
+    <nav class="navbar navbar-dark bg-dark mb-3 shadow-sm">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 text-info">🎸 Virtual Harp AR System</span>
+            <span class="badge bg-secondary">碩士班實驗室專案 v0.0.2</span>
+        </div>
+    </nav>
 
+    <div class="container-fluid main-container">
+        <div class="row h-100 g-3">
+            
+            <div class="col-lg-3 col-md-4 d-flex flex-column h-100">
+                <div class="side-panel p-2 d-flex flex-column shadow">
+                    <div id="player" class="rounded overflow-hidden mb-2 shadow-sm" style="width:100% !important; height:200px !important;"></div>
+                    <h6 class="p-2 border-bottom border-secondary text-info">🎵 播放清單</h6>
+                    <div id="songList" class="flex-grow-1 overflow-auto custom-scrollbar">
+                        </div>
+                </div>
             </div>
-            <div class="canvas">
-                <video class="input_video" style="display:none;position:absolute" ></video>
-                <canvas class="output_canvas"></canvas>
+
+            <div class="col-lg-6 col-md-8 h-100">
+                <div class="canvas-wrapper h-100 d-flex align-items-center justify-content: center">
+                    <video class="input_video" style="display:none;"></video>
+                    <canvas class="output_canvas w-100 h-auto" style="max-height:100%; object-fit: contain;"></canvas>
+                </div>
             </div>
-            <div class="right">
-                <button id="open-composer-btn" class="wood-button">
-                    🎸 調音與音色設定
-                </button>
-                
-                <div id="composer-slot"></div>
+
+            <div class="col-lg-3 col-md-12">
+                <div class="side-panel p-3 shadow">
+                    <button id="open-composer-btn" class="btn btn-outline-info w-100 mb-3 shadow-sm">
+                        ⚙️ 調音與音色設定
+                    </button>
+                    <div id="composer-slot" class="rounded bg-black bg-opacity-25 p-2">
+                        </div>
+                </div>
             </div>
         </div>
-        <div class="function">
-           <div class="song-info">
-                <h2 style="color :#ccc;">請從左側選歌</h2>
-           </div>
+    </div>
+
+    <div class="container-fluid mt-3" style="height: 20vh;">
+        <div class="row justify-content-center h-100">
+            <div class="col-10">
+                <div class="song-info d-flex flex-column align-items-center justify-content-center h-100 rounded shadow-sm border border-info border-opacity-25 bg-dark bg-opacity-50">
+                    <h2 class="text-secondary opacity-50">請從左側選歌</h2>
+                </div>
+            </div>
         </div>
-        
-        <!--mediapipe src-->
-        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/webmidi@3.1.1/dist/iife/webmidi.iife.js"></script>
-        <!--web synth-->
-        <script type="module">
-            import MidiSynth from 'https://tsai1010.github.io/scripts/midisynth-gui.js';
-            try {
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/webmidi@3.1.1/dist/iife/webmidi.iife.js"></script>
+    
+    <script type="module">
+        import MidiSynth from 'https://tsai1010.github.io/scripts/midisynth-gui.js';
+        try {
             window.synth = new MidiSynth('#composer-slot');
             console.log("MidiSynth 實體化成功:", window.synth);
-            } catch (e) {
-                console.error("MidiSynth 初始化失敗:", e);
-            }
-        </script>
-        <!--tone.js-->
-        <script src="https://unpkg.com/tone"></script>
-        <script src="https://unpkg.com/@tonejs/midi"></script>
-        <!--self js file-->
-        <script src="song.js"></script><script src="roll.js"></script>
-        <script src="midiHandler.js"></script>
-        <script src="harp.js"></script>
-        <script src="skeletons.js"></script>
-        <script src="scripts.js?v=0.0.2"></script>
-        <!--youtube-->
-        <script src="https://www.youtube.com/iframe_api"></script>
-    </body>
+        } catch (e) {
+            console.error("MidiSynth 初始化失敗:", e);
+        }
+    </script>
+    
+    <script src="https://unpkg.com/tone"></script>
+    <script src="https://unpkg.com/@tonejs/midi"></script>
+    <script src="song.js"></script>
+    <script src="roll.js"></script>
+    <script src="midiHandler.js"></script>
+    <script src="harp.js"></script>
+    <script src="skeletons.js"></script>
+    <script src="scripts.js?v=0.0.2"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
