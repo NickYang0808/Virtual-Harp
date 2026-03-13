@@ -43,7 +43,7 @@
     <body>
     <nav class="navbar navbar-dark bg-dark position-relative py-1 shadow-sm">
         <div class="container-fluid d-flex justify-content-center">
-            <span class="navbar-brand mb-0 h1 text-info" style="font-size: 1.2rem;">Virtual Harp Accompany System</span>
+            <span class="navbar-brand mb-0 h1 text-info" style="font-size: 1.2rem;">Virtual Harp AR System</span>
             <span class="badge bg-secondary position-absolute end-0 me-3">虛擬豎琴伴奏系統 v(beta) 0.0.1</span>
         </div>
     </nav>
@@ -51,7 +51,7 @@
     <div class="container-fluid main-container">
         <div class="row h-100 g-3">
             
-            <div class="col-lg-3 col-md-4 d-flex flex-column h-100">
+            <div class="col-lg-2 col-md-4 d-flex flex-column h-100">
                 <div class="side-panel p-2 d-flex flex-column shadow">
                     <div id="player" class="rounded overflow-hidden mb-2 shadow-sm" style="width:100% !important; height:200px !important;"></div>
                     <h6 class="p-2 border-bottom border-secondary text-info">🎵 播放清單</h6>
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-7 col-md-8 h-100">
+            <div class="col-lg-8 col-md-8 h-100">
                 <div class="canvas-wrapper h-100 d-flex align-items-center justify-content: center">
                     <video class="input_video" style="display:none;"></video>
                     <canvas class="output_canvas w-100 h-auto" style="max-height:100%; object-fit: contain;"></canvas>
@@ -95,12 +95,8 @@
     
     <script type="module">
         import MidiSynth from 'https://tsai1010.github.io/scripts/midisynth-gui.js';
-        try {
-            window.synth = new MidiSynth('#composer-slot');
-            console.log("MidiSynth 實體化成功:", window.synth);
-        } catch (e) {
-            console.error("MidiSynth 初始化失敗:", e);
-        }
+        window.synth = new MidiSynth('#composer-slot');
+
     </script>
     
     <script src="https://unpkg.com/tone"></script>
