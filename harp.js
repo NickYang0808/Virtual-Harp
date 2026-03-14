@@ -13,8 +13,13 @@ class Harp {
     this.handHistory=[];
     this.maxHistory=20;
     this.particles=[];
-
-    noteAnimation(type,position);{
+    this.strings = Array.from({ length: this.stringCount }, () => ({
+      brightness: 0,
+      offset: 0,
+      wasInside: {} 
+    }));
+  }
+  noteAnimation(type,position){
       this.particles.push({
         type:type,
         x:position.x,
@@ -24,32 +29,25 @@ class Harp {
         scale:0.5+Math.random()*0.5
       });
     }
-    // 畫十字星 (Star)
-    _drawStar(ctx); {
-        ctx.beginPath();
-        ctx.moveTo(-10, 0); ctx.lineTo(10, 0);
-        ctx.moveTo(0, -10); ctx.lineTo(0, 10);
-        ctx.stroke();
-    }
-
-    // 畫圓圈 (Circle)
-    _drawCircle(ctx); {
-        ctx.beginPath();
-        ctx.arc(0, 0, 8, 0, Math.PI * 2);
-        ctx.stroke();
-    }
-
-    // 畫方塊 (Square)
-    _drawSquare(ctx); {
-        ctx.strokeRect(-7, -7, 14, 14);
-    }
-    this.strings = Array.from({ length: this.stringCount }, () => ({
-      brightness: 0,
-      offset: 0,
-      wasInside: {} 
-    }));
+  // 畫十字星 (Star)
+  _drawStar(ctx) {
+      ctx.beginPath();
+      ctx.moveTo(-10, 0); ctx.lineTo(10, 0);
+      ctx.moveTo(0, -10); ctx.lineTo(0, 10);
+      ctx.stroke();
   }
 
+  // 畫圓圈 (Circle)
+  _drawCircle(ctx) {
+      ctx.beginPath();
+      ctx.arc(0, 0, 8, 0, Math.PI * 2);
+      ctx.stroke();
+  }
+
+  // 畫方塊 (Square)
+  _drawSquare(ctx) {
+      ctx.strokeRect(-7, -7, 14, 14);
+  }
   update(frame, fingerPoints, currentChord) {
     const now = Date.now();
     const canTrigger = now - this.lastTriggerTime > this.stringTriggerCooldown;
