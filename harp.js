@@ -86,14 +86,6 @@ class Harp {
       if (this.handHistory.length > this.maxHistory) {
         this.handHistory.shift();
       }
-
-      if(this.handHistory.length%5===0){
-        const xOffset=1280/4;
-        this.noteAnimation('star',{
-          x:mainFinger.x-xOffset,
-          y:mainFinger.y
-        });
-      }
     }
     //particles life
     this.particles.forEach((p,index)=>{
@@ -202,6 +194,16 @@ class Harp {
       sendMidiToSynth(note);
       //debug用
       console.log(`撥動${index}弦，音高${note}`);
+
+      if (this.handHistory.length > 0) {
+          const lastPos = this.handHistory[this.handHistory.length - 1];
+          // 如果你想讓星星出現在「偏離左邊」的軌跡上：
+          const xOffset = 1280 / 4; 
+          this.noteAnimation('star', {
+              x: lastPos.x + xOffset,
+              y: lastPos.y
+          });
+      }
     }else console.log(`第${index}沒音符`);//可測試和弦完整性
 
     //visual feedback
