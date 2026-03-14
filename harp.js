@@ -10,6 +10,9 @@ class Harp {
     this.hitboxMargin = 0.02;
     this.stringTriggerCooldown = 30;
     this.lastTriggerTime = 0;
+
+    this.activateAnimationTime=0;
+    this.animationDuration=500;
     this.handHistory=[];
     this.maxHistory=20;
     this.particles=[];
@@ -78,14 +81,25 @@ class Harp {
             this.strings[i].wasInside[fingerID] = isInside;
         });
     }
-    //2.獨立紀錄軌跡檢查是否有抓到手指，有的話紀錄第一隻手指 (fingerPoints[0])
+    
     if (fingerPoints && fingerPoints.length > 0) {
       const mainFinger = fingerPoints[0]; // 取得陣列中的第一個手指對象
-      this.handHistory.push({ x: mainFinger.x*1280, y: mainFinger.y*640 });
-      // 限制長度
+      const px=mainFinger.x*1280;
+      const py=mainFinger.y*640;
+      //紀錄軌跡與設定長度
+      this.handHistory.push({ x: px, y:  py});
       if (this.handHistory.length > this.maxHistory) {
         this.handHistory.shift();
       }
+    const isActive = (Date.now() - this.activeAnimationTime) < this.animationDuration;
+    if (isActive && this.handHistory.length % 5 === 0) {
+      const xOffset = 1280 / 4; 
+      // 這裡呼叫你的 noteAnimation
+      this.noteAnimation('star', {
+        x: px + xOffset,
+        y: py
+      });
+    }
     }
     //particles life
     this.particles.forEach((p,index)=>{
@@ -196,22 +210,9 @@ class Harp {
       sendMidiToSynth(note);
       //debug用
       console.log(`撥動${index}弦，音高${note}`);
-
-      if (this.handHistory.length > 0) {
-        const lastPos = this.handHistory[this.handHistory.length - 1];
-        
-        const xOffset = 1280 / 4; 
-        
-        // 觸發多個粒子效果會更明顯
-        for(let i = 0; i < 3; i++) {
-          this.noteAnimation('star', {
-            x: lastPos.x + xOffset, // 這裡確保跟軌跡重合
-            y: lastPos.y
-          });
-        }
-      }
-    }else console.log(`第${index}沒音符`);//可測試和弦完整性
-
+      //開啟動畫時間
+      this.activeAnimationTime = Date.now();
+    }
     //visual feedback
     this.strings[index].brightness = 1.0; 
     this.strings[index].offset = (Math.random() - 0.5) * 0.03;
