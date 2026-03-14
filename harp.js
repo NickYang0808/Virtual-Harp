@@ -64,7 +64,10 @@ class Harp {
       ctx.moveTo(pos.x1 * canvasWidth, pos.y1 * canvasHeight);
       ctx.lineTo(pos.x2 * canvasWidth, pos.y2 * canvasHeight);
       ctx.lineWidth = 2.2 + brightness * 4;
-      ctx.strokeStyle = `rgb(${colorValue}, ${colorValue}, ${colorValue})`;
+      ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+
+      //light
+      
       ctx.stroke();
     }
   }
