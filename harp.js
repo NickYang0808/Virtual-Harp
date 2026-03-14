@@ -81,7 +81,6 @@ class Harp {
       x2: (px + frame.stringDir2D.x * (this.length * downRatio)) + visualOffset * frame.forward2D.y,
       y2: (py + frame.stringDir2D.y * (this.length * downRatio)) - visualOffset * frame.forward2D.x
     };
-
   }
 
   _triggerString(index, chord) {
@@ -97,6 +96,6 @@ class Harp {
 
     //visual feedback
     this.strings[index].brightness = 1.0; 
-    this.strings[index].offset = (Math.random() - 0.5) * 0.06;
+    this.strings[index].offset = (Math.random() - 0.5) * 0.03;
   }
 }
