@@ -10,6 +10,8 @@ class Harp {
     this.hitboxMargin = 0.02;
     this.stringTriggerCooldown = 30;
     this.lastTriggerTime = 0;
+    this.handHistory=[];
+    this.maxHistory=20;
 
     this.strings = Array.from({ length: this.stringCount }, () => ({
       brightness: 0,
@@ -38,12 +40,17 @@ class Harp {
 
         fingerPoints.forEach(finger => {
             const isInside = finger.x >= hitbox.minX && finger.x <= hitbox.maxX && 
-                             finger.y >= hitbox.minY && finger.y <= hitbox.maxY;
+                              finger.y >= hitbox.minY && finger.y <= hitbox.maxY;
             const fingerID = finger.id || 0;
-
+            
             if (!this.strings[i].wasInside[fingerID] && isInside && canTrigger) {
                 this._triggerString(i, currentChord);
                 this.lastTriggerTime = now;
+            }
+            this.handHistory.push({x:finger.x,y:finger.y});
+
+            if(this.handHistory.length>this.maxHistory){
+              this.handHistory.shift();
             }
             this.strings[i].wasInside[fingerID] = isInside;
         });
@@ -58,7 +65,7 @@ class Harp {
 
       const r=255;
       const g=255;
-      const b = Math.floor(255 + (1-brightness));
+      const b = Math.floor(255 * (1-brightness));
 
       ctx.beginPath();
       ctx.moveTo(pos.x1 * canvasWidth, pos.y1 * canvasHeight);
@@ -68,13 +75,39 @@ class Harp {
 
       //light
       // 選用：加入發光外框 (Glow)，會讓黃色看起來更像在發亮
-    if (brightness > 0.1) {
-      ctx.shadowBlur = 10 * brightness;
-      ctx.shadowColor = `rgba(255, 255, 0, ${brightness})`;
-    } else {
-      ctx.shadowBlur = 0;
-    }
+      if (brightness > 0.1) {
+        ctx.shadowBlur = 10 * brightness;
+        ctx.shadowColor = `rgba(255, 255, 0, ${brightness})`;
+      } else {
+        ctx.shadowBlur = 0;
+      }
       ctx.stroke();
+    }
+// 2. 【在迴圈外面】畫軌跡，這樣軌跡就會在最上層
+    if (this.handHistory.length > 5) {
+      ctx.save(); // 保護畫布狀態
+      const xOffset=canvasWidth/4;
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(153, 255, 19, 0.5)"; // 白色半透明軌跡
+      ctx.lineWidth = 3;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = "white";
+
+      // 繪製起點 (套用偏移)
+      const startX = (this.handHistory[0].x * canvasWidth) - xOffset;
+      const startY = this.handHistory[0].y * canvasHeight;
+      ctx.moveTo(startX, startY);
+
+      // 繪製後續點 (套用偏移)
+      for (let i = 1; i < this.handHistory.length; i++) {
+          const nextX = (this.handHistory[i].x * canvasWidth) - xOffset;
+          const nextY = this.handHistory[i].y * canvasHeight;
+          ctx.lineTo(nextX, nextY);
+      }
+      ctx.stroke();
+      ctx.restore(); // 恢復狀態，避免影響下一幀繪圖
     }
   }
 
