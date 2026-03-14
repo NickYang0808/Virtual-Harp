@@ -71,7 +71,7 @@ class Harp {
 
       const r=255;
       const g=255;
-      const b = Math.floor(255 * (1-brightness));
+      const b=255;
 
       ctx.beginPath();
       ctx.moveTo(pos.x1 * canvasWidth, pos.y1 * canvasHeight);
