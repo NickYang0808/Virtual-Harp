@@ -11,7 +11,7 @@ class Harp {
     this.stringTriggerCooldown = 30;
     this.lastTriggerTime = 0;
 
-    this.activateAnimationTime=0;
+    this.activeAnimationTime=0;
     this.animationDuration=500;
     this.handHistory=[];
     this.maxHistory=20;
