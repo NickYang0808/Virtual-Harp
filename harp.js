@@ -56,7 +56,10 @@ class Harp {
       const { brightness, offset } = this.strings[i];
       const pos = this._calculateStringPos(frame, stringIndex, offset);
 
-      const colorValue = Math.floor(100 + brightness * 155);
+      const r=255;
+      const g=255;
+      const b = Math.floor(255 + (1-brightness));
+
       ctx.beginPath();
       ctx.moveTo(pos.x1 * canvasWidth, pos.y1 * canvasHeight);
       ctx.lineTo(pos.x2 * canvasWidth, pos.y2 * canvasHeight);
