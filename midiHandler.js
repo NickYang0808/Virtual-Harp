@@ -197,7 +197,8 @@ function chordAnalyze(notes) {
     "4-7-11": { label: "maj7",  class: 3 },
     "3-7-10": { label: "m7",    class: 4 },
     "2-5-10": { label: "11",    class: 5 }, // 簡化標記為 11
-    "4-8":    { label: "aug",   class: 6 }
+    "4-8":    { label: "aug",   class: 6 },
+    "3-6-10": { label: "m7-5",  class: 6}
   };
 
   const result = chordMap[intervalStr] || { label: "?", class: -1 };
