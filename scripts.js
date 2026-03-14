@@ -9,7 +9,7 @@ var midiOutput = null;
 let guideLayer=null;
 let videoElement, canvasCtx, canvasElement;
 let myHarp = new Harp();
-const mySkeleton = new Skeleton({ color: "#003cffff", lineWidth: 4 });
+const mySkeleton = new Skeleton({ color: "rgb(255, 255, 255)", lineWidth: 5 });
 let smoothLandmarks = {};
 let smoothFrame = {
   center: { x: 0.5, y: 0.5 },
