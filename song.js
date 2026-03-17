@@ -38,5 +38,14 @@ const IMUSE_SONGS = [
     youtubeUrl: "https://www.youtube.com/watch?v=GPoTmtykcGY",
     firstBeatOffset: 26.123, //約0:17秒左右,
     scene:"pub"
+  },
+  {
+    title: "天鵝",
+    category: "古典歌曲",
+    url: "./midi/天鵝.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=Qh0W2y-4yuQ",
+    firstBeatOffset: 1, //約0:17秒左右,
+    scene:"night"
   }
 ];
+
