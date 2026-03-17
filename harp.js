@@ -4,7 +4,7 @@
 class Harp {
   constructor(config = {}) {
     this.stringCount = config.stringCount || 7;
-    this.spacing = config.spacing || 0.02; 
+    this.spacing = config.spacing || 0.03; 
     this.length = config.length || 0.7;    
     this.baseOffset = config.baseOffset || 0.15; // 固定距離
     this.hitboxMargin = 0.02;
