@@ -29,7 +29,7 @@ const IMUSE_SONGS = [
     url: "./midi/你是我的花朵.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=FXg4LXsg14s",
     firstBeatOffset: 43.790, //約0:17秒左右,
-    scene:"pub"
+    scene:"flower"
   },
   {
     title: "歡喜就好",
@@ -37,6 +37,6 @@ const IMUSE_SONGS = [
     url: "./midi/歡喜就好.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=GPoTmtykcGY",
     firstBeatOffset: 26.200, //約0:17秒左右,
-    scene:"pub"
+    scene:"happy"
   }
 ];

@@ -21,6 +21,8 @@ body.lake {background-image: url('assets/lake.webp');}
 body.night {background-image: url('assets/night.webp');}
 body.ocean {background-image: url('assets/ocean.webp');}
 body.pub {background-image: url('assets/pub.webp');}
+body.flower {background-image: url('assets/flower.webp');}
+body.happy {background-image: url('assets/happy.webp');}
 
 body {
   background-image: url('assets/night.webp');
