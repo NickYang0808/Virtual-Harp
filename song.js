@@ -5,7 +5,7 @@ const IMUSE_SONGS = [
     url: "./midi/月亮代表我的心.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=IiFm7AWP9n4",
     firstBeatOffset: 12.85, //0:12.8秒左右,結束於1:52,
-    scene:"night"
+    scene: "night",
   },
   {
     title: "聽海",
@@ -13,31 +13,31 @@ const IMUSE_SONGS = [
     url: "./midi/聽海.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=mLk61pfiHQ0",
     firstBeatOffset: 44.315, //約0:13秒左右,
-    scene:"ocean"
+    scene: "ocean",
   },
   {
     title: "傷心酒店",
-    category: "華語歌曲",
+    category: "台語歌曲",
     url: "./midi/傷心酒店.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=Jl0CAEZn9II",
     firstBeatOffset: 20.3, //約0:17秒左右,
-    scene:"pub"
+    scene: "pub",
   },
   {
     title: "你是我的花朵",
     category: "華語歌曲",
     url: "./midi/你是我的花朵.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=FXg4LXsg14s",
-    firstBeatOffset: 43.720, //約0:17秒左右,
-    scene:"pub"
+    firstBeatOffset: 43.72, //約0:17秒左右,
+    scene: "pub",
   },
   {
     title: "歡喜就好",
-    category: "華語歌曲",
+    category: "台語歌曲",
     url: "./midi/歡喜就好.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=GPoTmtykcGY",
     firstBeatOffset: 26.123, //約0:17秒左右,
-    scene:"pub"
+    scene: "pub",
   },
   {
     title: "天鵝",
@@ -45,7 +45,14 @@ const IMUSE_SONGS = [
     url: "./midi/天鵝.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=Qh0W2y-4yuQ",
     firstBeatOffset: 1, //約0:17秒左右,
-    scene:"night"
-  }
+    scene: "night",
+  },
+  {
+    title: "車站",
+    category: "台語歌曲",
+    url: "./midi/車站.mid",
+    youtubeUrl: "https://www.youtube.com/watch?v=6bmK5u-x25k",
+    firstBeatOffset: 6.8, //約0:17秒左右,
+    scene: "night",
+  },
 ];
-
