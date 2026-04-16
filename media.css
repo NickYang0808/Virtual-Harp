@@ -1,32 +1,47 @@
 /* 定義木質調變數 */
 :root {
-    --wood-dark: #2c1e14;      /* 深胡桃木 */
-    --wood-medium: #5d3a1a;    /* 溫暖柚木 */
-    --wood-light: #8b5a2b;     /* 亮橡木 */
-    --paper-white: #f5f2e8;    /* 羊皮紙色文字 */
-    --accent-gold: #d4af37;    /* 金色重點色 (取代藍色) */
+  --wood-dark: #2c1e14; /* 深胡桃木 */
+  --wood-medium: #5d3a1a; /* 溫暖柚木 */
+  --wood-light: #8b5a2b; /* 亮橡木 */
+  --paper-white: #f5f2e8; /* 羊皮紙色文字 */
+  --accent-gold: #d4af37; /* 金色重點色 (取代藍色) */
 }
 /*Glass*/
-.glass-panel{
+.glass-panel {
   /* 0.1 代表只有 10% 的顏色，幾乎是透明的 */
-    background: rgba(255, 255, 255, 0.1) !important; 
-    backdrop-filter: blur(5px); /* 輕微模糊增加質感 */
-    -webkit-backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(5px); /* 輕微模糊增加質感 */
+  -webkit-backdrop-filter: blur(5px);
 }
 .text-info {
-  color:#f5f2e8 !important;
+  color: #f5f2e8 !important;
 }
 /*scean*/
-body.lake {background-image: url('assets/lake.webp');}
-body.night {background-image: url('assets/night.webp');}
-body.ocean {background-image: url('assets/ocean.webp');}
-body.pub {background-image: url('assets/pub.webp');}
-body.flower {background-image: url('assets/flower.webp');}
-body.happy {background-image: url('assets/happy.webp');}
+body.lake {
+  background-image: url("assets/lake.webp");
+}
+body.night {
+  background-image: url("assets/night.webp");
+}
+body.ocean {
+  background-image: url("assets/ocean.webp");
+}
+body.pub {
+  background-image: url("assets/pub.webp");
+}
+body.flower {
+  background-image: url("assets/flower.webp");
+}
+body.happy {
+  background-image: url("assets/happy.webp");
+}
+body.station {
+  background-image: url("assets/station.webp");
+}
 
 body {
-  background-image: url('assets/night.webp');
-  
+  background-image: url("assets/night.webp");
+
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -43,8 +58,8 @@ body {
 
 /*navbar*/
 .navbar {
-  flex:0 0 5vh;
-  background: rgba(0,0,0,0.1) !important;
+  flex: 0 0 5vh;
+  background: rgba(0, 0, 0, 0.1) !important;
   backdrop-filter: blur(8px);
 }
 
@@ -58,79 +73,79 @@ body {
 
 /*SONG LIST */
 .side-panel {
-    background: rgba(44, 30, 20, 0.7) !important; /* 深木色透明 */
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(139, 90, 43, 0.3);
-    border-radius: 15px;
-    height: 100%;
-    min-width: 0;
-    overflow: hidden;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+  background: rgba(44, 30, 20, 0.7) !important; /* 深木色透明 */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 90, 43, 0.3);
+  border-radius: 15px;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
 }
 #songList {
-  flex-grow:1;
+  flex-grow: 1;
   overflow-y: auto;
 }
 /*美化 */
 .playlist-item {
-    padding: 12px 15px;
-    color: #b5a48b;
-    border-bottom: 1px solid rgba(139, 90, 43, 0.2);
+  padding: 12px 15px;
+  color: #b5a48b;
+  border-bottom: 1px solid rgba(139, 90, 43, 0.2);
 }
 
 .playlist-item:hover {
-    background: rgba(139, 90, 43, 0.2);
-    color: var(--paper-white);
+  background: rgba(139, 90, 43, 0.2);
+  color: var(--paper-white);
 }
 
 .playlist-item.active {
-    background: var(--wood-medium);
-    color: var(--accent-gold);
-    border-left: 4px solid var(--accent-gold);
+  background: var(--wood-medium);
+  color: var(--accent-gold);
+  border-left: 4px solid var(--accent-gold);
 }
 /* CANVAS */
 .canvas-wrapper {
-    background: rgba(0, 0, 0, 0.2) !important;
-    border-radius: 12px;
-    border: 3px solid var(--wood-medium); /* 像畫框一樣 */
-    box-shadow: 0 0 20px rgba(0,0,0,0.8);
-    overflow: hidden;
-    position: relative;
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-radius: 12px;
+  border: 3px solid var(--wood-medium); /* 像畫框一樣 */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  position: relative;
 }
 
 .output_canvas {
-    max-width: 100%;
-    max-height: 100%;
-    aspect-ratio: 1280 / 640; 
-    object-fit: contain;
-    transform: scaleX(-1);
-    border: 2px dashed rgb(96, 96, 96);
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1280 / 640;
+  object-fit: contain;
+  transform: scaleX(-1);
+  border: 2px dashed rgb(96, 96, 96);
 }
 #composer-slot {
-    /* 強制預留高度，避免組件跳出來時推擠排版 */
-    min-height: 350px; 
-    width: 100%;
-    margin-top: 15px;
-    /* 讓它有一點深色底色，即使沒東西時也不會看起來空空的 */
-    background: rgba(0, 0, 0, 0.2); 
-    border-radius: 12px;
-    transition: all 0.3s ease; /* 增加平滑感 */
+  /* 強制預留高度，避免組件跳出來時推擠排版 */
+  min-height: 350px;
+  width: 100%;
+  margin-top: 15px;
+  /* 讓它有一點深色底色，即使沒東西時也不會看起來空空的 */
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease; /* 增加平滑感 */
 }
 /*Synth and effect*/
 /* 針對按鈕邊框與文字 */
 .btn-outline-info {
-    color: var(--paper-white) !important;        /* 木質棕 */
-    border-color: var(--paper-white) !important;
+  color: var(--paper-white) !important; /* 木質棕 */
+  border-color: var(--paper-white) !important;
 }
 
 /* 6. 下方資訊區：古籍感 */
 .song-info {
-    background: rgba(44, 30, 20, 0.6);
-    border: 2px solid var(--wood-medium);
-    border-radius: 12px;
+  background: rgba(44, 30, 20, 0.6);
+  border: 2px solid var(--wood-medium);
+  border-radius: 12px;
 }
 
 /* 7. 滾動條：木質調配色 */
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--wood-light);
+  background: var(--wood-light);
 }

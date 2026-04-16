@@ -53,6 +53,6 @@ const IMUSE_SONGS = [
     url: "./midi/車站.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=6bmK5u-x25k",
     firstBeatOffset: 6.744,
-    scene: "night",
+    scene: "station",
   },
 ];
