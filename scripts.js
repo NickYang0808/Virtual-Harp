@@ -6,7 +6,7 @@ var currentMidiData = null;
 var currentChord = [60, 64, 67];
 var midiOutput = null;
 
-let guideLayer=null;
+let guideLayer = null;
 let videoElement, canvasCtx, canvasElement;
 let myHarp = new Harp();
 const mySkeleton = new Skeleton({ color: "rgb(255, 255, 255)", lineWidth: 5 });
@@ -56,22 +56,21 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-  if(event.data==YT.PlayerState.PLAYING){
+  if (event.data == YT.PlayerState.PLAYING) {
     console.log("START VIDEO");
     updateVideoCounter();
-  }else{
+  } else {
     console.log("VIDEO PAUSE OR STOP");
     cancelAnimationFrame(timeRequestId);
   }
 }
-
 
 // --- 4. 換歌邏輯 (放在最外層，確保 Selector 叫得到) ---
 window.switchSong = async function (selectedSong) {
   if (!selectedSong) return;
   //change scean
   if (selectedSong.scene) {
-      document.body.className = selectedSong.scene; // 切換 class 即可瞬間換圖
+    document.body.className = selectedSong.scene; // 切換 class 即可瞬間換圖
   }
   //change song
   console.log("🎵 切換歌曲：", selectedSong.title);
@@ -88,9 +87,9 @@ window.switchSong = async function (selectedSong) {
       setTimeout(tryCueVideo, 500);
     }
   };
-  const infoContainer = document.querySelector('.song-info');
+  const infoContainer = document.querySelector(".song-info");
   if (infoContainer) {
-      infoContainer.innerHTML = `
+    infoContainer.innerHTML = `
         <h2 style="margin:0; font-size: 36px; color: #ffffff">${selectedSong.title}</h2>
         <p id="song-bpm-display" style="margin:5px 0 0 0; color: #ededed;">BPM: 解析中...</p>
         <div id="timer-container" style="font-family: monospace; font-size: 1.2rem; color: #ffffff; margin-top: 10px;">
@@ -103,8 +102,9 @@ window.switchSong = async function (selectedSong) {
       selectedSong.url,
       selectedSong.firstBeatOffset || 0,
     );
-    const bpmDisplay=document.getElementById('song-bpm-display');
-    if(bpmDisplay) bpmDisplay.innerText = `BPM: ${currentMidiData.bpm} | 音符: ${currentMidiData.totalNotes}`; 
+    const bpmDisplay = document.getElementById("song-bpm-display");
+    if (bpmDisplay)
+      bpmDisplay.innerText = `BPM: ${currentMidiData.bpm} | 音符: ${currentMidiData.totalNotes}`;
     tryCueVideo();
   } catch (err) {
     console.error("切換失敗", err);
@@ -112,29 +112,31 @@ window.switchSong = async function (selectedSong) {
 };
 //對齊影片
 let timeRequestId;
-let lastChordString="";
+let lastChordString = "";
 
-function updateVideoCounter(){
-  const timeDisplay = document.getElementById('video-current-time');
+function updateVideoCounter() {
+  const timeDisplay = document.getElementById("video-current-time");
 
-  if(timeDisplay&&player&& player.getCurrentTime){
+  if (timeDisplay && player && player.getCurrentTime) {
     const currentTime = player.getCurrentTime();
-    timeDisplay.innerText=currentTime.toFixed(3);
-    
-    if(currentMidiData && currentMidiData.progression){
-      const activeNotes=getActiveChord(currentTime,currentMidiData);
-      const currentStr=JSON.stringify(activeNotes);
+    timeDisplay.innerText = currentTime.toFixed(3);
+
+    if (currentMidiData && currentMidiData.progression) {
+      const activeNotes = getActiveChord(currentTime, currentMidiData);
+      const currentStr = JSON.stringify(activeNotes);
 
       //console test
-      if(currentStr!==lastChordString){
-        console.log(`當前和弦：${chordAnalyze(activeNotes).name}|當前和弦內音符：[${activeNotes.join(',')}]`);
-        lastChordString=currentStr;
+      if (currentStr !== lastChordString) {
+        console.log(
+          `當前和弦：${chordAnalyze(activeNotes).name}|當前和弦內音符：[${activeNotes.join(",")}]`,
+        );
+        lastChordString = currentStr;
       }
     }
     //baseOffset對齊運算
     //check MIDI event
   }
-  timeRequestId=requestAnimationFrame(updateVideoCounter);
+  timeRequestId = requestAnimationFrame(updateVideoCounter);
 }
 // --- 5. MediaPipe 與 相機 (必須在 window.onload，因為要抓 HTML 元素) ---
 window.onload = () => {
@@ -144,7 +146,7 @@ window.onload = () => {
   canvasCtx = canvasElement.getContext("2d");
   canvasElement.width = 1280;
   canvasElement.height = 640;
-  document.body.className="";//初始化襪defualt紙
+  document.body.className = ""; //初始化襪defualt紙
   const pose = new Pose({
     locateFile: (file) =>
       `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
@@ -178,30 +180,39 @@ window.onload = () => {
 
 //判斷抓到鼻子、肩膀
 function checkDetection(results, guide, canvas) {
-    const lm = results.poseLandmarks;
-    
-    // 1. 核心判斷：頭(0)與雙肩(11, 12) 是否都在畫面內且信心度 > 0.5
-    const isDetected = !!(lm && lm[0]?.visibility > 0.5 && 
-                           lm[11]?.visibility > 0.5 && 
-                           lm[12]?.visibility > 0.5);
+  const lm = results.poseLandmarks;
 
-    // 2. 切換 UI 狀態 (使用 Bootstrap 的 d-none)
-    if (guide) guide.classList.toggle('d-none', isDetected);
-    if (canvas) canvas.style.opacity = isDetected ? "1" : "0.3";
+  // 1. 核心判斷：頭(0)與雙肩(11, 12) 是否都在畫面內且信心度 > 0.5
+  const isDetected = !!(
+    lm &&
+    lm[0]?.visibility > 0.5 &&
+    lm[11]?.visibility > 0.5 &&
+    lm[12]?.visibility > 0.5
+  );
 
-    return isDetected;
+  // 2. 切換 UI 狀態 (使用 Bootstrap 的 d-none)
+  if (guide) guide.classList.toggle("d-none", isDetected);
+  if (canvas) canvas.style.opacity = isDetected ? "1" : "0.3";
+
+  return isDetected;
 }
 // --- 6. 核心計算 (保留你原本的所有主程式邏輯) ---
 async function onResults(results) {
-  const isReady=checkDetection(results,guideLayer,canvasElement);
-  
-  if(!isReady){
-    const ctx = canvasElement.getContext('2d');
-    ctx.clearRect(0,0,canvasElement.width,canvasElement.height);
+  const isReady = checkDetection(results, guideLayer, canvasElement);
+
+  if (!isReady) {
+    const ctx = canvasElement.getContext("2d");
+    ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     // 在畫布內也畫一個半透明的人影，比起單純 CSS 更有質感
     ctx.save();
     ctx.globalAlpha = 0.5; // 畫布層級的半透明
-    ctx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+    ctx.drawImage(
+      results.image,
+      0,
+      0,
+      canvasElement.width,
+      canvasElement.height,
+    );
     ctx.restore();
     return;
   }
@@ -274,10 +285,7 @@ async function onResults(results) {
         fx < -0.98 ? p.id === 19 : fx > 0.98 ? p.id === 20 : false,
       );
 
-    if (
-      player &&
-      typeof player.getCurrentTime === "function" 
-    ) {
+    if (player && typeof player.getCurrentTime === "function") {
       currentChord = getActiveChord(player.getCurrentTime(), currentMidiData);
     } else {
       currentChord = [60, 64, 67];
@@ -285,14 +293,14 @@ async function onResults(results) {
 
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    if (myHarp)
-      myHarp.update(smoothFrame, fingerPoints, currentChord);
+    if (myHarp) myHarp.update(smoothFrame, fingerPoints, currentChord);
     mySkeleton.draw(
       canvasCtx,
       displayLandmarks,
       canvasElement.width,
       canvasElement.height,
       fx,
+      latestHandResults?.multiHandLandmarks,
     );
     myHarp.draw(
       canvasCtx,

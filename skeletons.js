@@ -17,9 +17,32 @@ class Skeleton {
       [25, 27],
       [26, 28], // 腿部
     ];
+    this.handConnections = [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [0, 5],
+      [5, 6],
+      [6, 7],
+      [7, 8],
+      [5, 9],
+      [9, 10],
+      [10, 11],
+      [11, 12],
+      [9, 13],
+      [13, 14],
+      [14, 15],
+      [15, 16],
+      [13, 17],
+      [0, 17],
+      [17, 18],
+      [18, 19],
+      [19, 20],
+    ];
   }
 
-  draw(ctx, landmarks, width, height, fx = 0) {
+  draw(ctx, landmarks, width, height, fx = 0, handLandmarks = null) {
     if (!landmarks || landmarks.length === 0) return;
 
     // 確保寬高有效，否則畫不出來
@@ -76,60 +99,137 @@ class Skeleton {
 
     // --- 3. Palm (手掌) ---
     // 註解：檢查 landmarks[15] 到 [22] 是否存在
-    const handPaths = [
-      [15, 17, 19, 15],
-      [15, 21],
-      [16, 18, 20, 16],
-      [16, 22],
+    const handConnections = [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [0, 5],
+      [5, 6],
+      [6, 7],
+      [7, 8],
+      [5, 9],
+      [9, 10],
+      [10, 11],
+      [11, 12],
+      [9, 13],
+      [13, 14],
+      [14, 15],
+      [15, 16],
+      [13, 17],
+      [0, 17],
+      [17, 18],
+      [18, 19],
+      [19, 20],
     ];
-    ctx.strokeStyle = "rgba(0, 255, 255, 0.8)"; // 暫時改成青藍色，方便你辨認有沒有畫出來
-    handPaths.forEach((path) => {
-      ctx.beginPath();
-      let started = false;
-      path.forEach((idx) => {
-        const p = landmarks[idx];
-        if (p) {
-          if (!started) {
-            ctx.moveTo(p.x * w, p.y * h);
-            started = true;
-          } else ctx.lineTo(p.x * w, p.y * h);
-        }
-      });
-      ctx.stroke();
-    });
 
-    // --- 4. Hand 紅綠點 ---
-    // 註解：這裡使用了 smoothFrame.forward2D.x，請確保 smoothFrame 是全域變數
-    const handIndices = [19, 20];
+    const poseLeftWrist = landmarks[15];
+    const poseRightWrist = landmarks[16];
+
+    const distance2 = (a, b) => {
+      if (!a || !b) return Infinity;
+
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+
+      return dx * dx + dy * dy;
+    };
+
+    const currentFx =
+      typeof smoothFrame !== "undefined" && smoothFrame.forward2D
+        ? smoothFrame.forward2D.x
+        : fx;
+
     const ACTIVATE_THRESHOLD = 0.98;
 
-    handIndices.forEach((index) => {
-      const p = landmarks[index];
-      if (p) {
-        // 直接從全域取的 fx 比較保險
-        const currentFx =
-          typeof smoothFrame !== "undefined" ? smoothFrame.forward2D.x : fx;
-        const color = index === 19 ? "#FF0000" : "#00FF00";
+    let hasDrawnHands = false;
 
-        let shouldDraw = false;
-        if (currentFx < -ACTIVATE_THRESHOLD && index === 19) shouldDraw = true;
-        else if (currentFx > ACTIVATE_THRESHOLD && index === 20)
-          shouldDraw = true;
+    if (handLandmarks && handLandmarks.length > 0) {
+      handLandmarks.forEach((hand) => {
+        if (!hand || !hand[0]) return;
 
-        if (shouldDraw) {
-          ctx.save();
-          ctx.fillStyle = color;
+        const handWrist = hand[0];
+
+        const dLeft = distance2(handWrist, poseLeftWrist);
+        const dRight = distance2(handWrist, poseRightWrist);
+
+        const isLeftHand = dLeft < dRight;
+        const targetWrist = isLeftHand ? poseLeftWrist : poseRightWrist;
+
+        if (!targetWrist) return;
+
+        hasDrawnHands = true;
+
+        const offsetX = targetWrist.x - handWrist.x;
+        const offsetY = targetWrist.y - handWrist.y;
+
+        ctx.strokeStyle = "rgba(0, 255, 255, 0.85)";
+        ctx.lineWidth = 3;
+
+        handConnections.forEach(([i, j]) => {
+          const a = hand[i];
+          const b = hand[j];
+
+          if (!a || !b) return;
+
           ctx.beginPath();
-          ctx.arc(p.x * w, p.y * h, 15, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.strokeStyle = "white";
-          ctx.lineWidth = 3;
+          ctx.moveTo((a.x + offsetX) * w, (a.y + offsetY) * h);
+          ctx.lineTo((b.x + offsetX) * w, (b.y + offsetY) * h);
           ctx.stroke();
-          ctx.restore();
-        }
-      }
-    });
+        });
 
-    ctx.restore();
+        ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+
+        hand.forEach((p, index) => {
+          if (!p) return;
+
+          ctx.beginPath();
+          ctx.arc(
+            (p.x + offsetX) * w,
+            (p.y + offsetY) * h,
+            index === 0 ? 6 : 4,
+            0,
+            Math.PI * 2,
+          );
+          ctx.fill();
+        });
+
+        // --- 4. Hand 紅綠點，優先畫在 Hands 的食指尖 ---
+        const fingerTip = hand[8];
+
+        if (fingerTip) {
+          let shouldDraw = false;
+          let color = "white";
+
+          if (currentFx < -ACTIVATE_THRESHOLD && isLeftHand) {
+            shouldDraw = true;
+            color = "#FF0000";
+          } else if (currentFx > ACTIVATE_THRESHOLD && !isLeftHand) {
+            shouldDraw = true;
+            color = "#00FF00";
+          }
+
+          if (shouldDraw) {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(
+              (fingerTip.x + offsetX) * w,
+              (fingerTip.y + offsetY) * h,
+              15,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fill();
+
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      });
+      ctx.restore();
+    }
   }
 }
