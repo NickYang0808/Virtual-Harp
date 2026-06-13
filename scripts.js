@@ -8,6 +8,7 @@ var midiOutput = null;
 
 let guideLayer = null;
 let videoElement, canvasCtx, canvasElement;
+let latestHandResults = null;
 let myHarp = new Harp();
 const mySkeleton = new Skeleton({ color: "rgb(255, 255, 255)", lineWidth: 5 });
 let smoothLandmarks = {};
@@ -144,9 +145,12 @@ window.onload = () => {
   canvasElement = document.querySelector(".output_canvas");
   guideLayer = document.getElementById("detection-guide");
   canvasCtx = canvasElement.getContext("2d");
+
   canvasElement.width = 1280;
   canvasElement.height = 640;
+
   document.body.className = ""; //初始化襪defualt紙
+  //Pose骨架
   const pose = new Pose({
     locateFile: (file) =>
       `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
@@ -159,8 +163,25 @@ window.onload = () => {
   });
   pose.onResults(onResults);
 
+  const hands = new Hands({
+    locateFile: (file) =>
+      `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+  });
+  //hand骨架
+  hands.setOptions({
+    maxNumHands: 2,
+    modelComplexity: 1,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5,
+  });
+
+  hands.onResults((results) => {
+    latestHandResults = results;
+  });
+
   const camera = new Camera(videoElement, {
     onFrame: async () => {
+      await hands.send({ image: videoElement });
       await pose.send({ image: videoElement });
     },
     width: 1280,

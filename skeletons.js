@@ -229,7 +229,7 @@ class Skeleton {
           }
         }
       });
-      ctx.restore();
     }
+    ctx.restore();
   }
 }
