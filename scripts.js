@@ -295,16 +295,39 @@ async function onResults(results) {
     );
 
     const fx = smoothFrame.forward2D.x;
-    const fingerPoints = [19, 20]
-      .map((i) => ({
-        ...displayLandmarks[i],
-        id: i,
-        x: displayLandmarks[i].x * canvasElement.width,
-        y: displayLandmarks[i].y * canvasElement.height,
-      }))
-      .filter((p) =>
-        fx < -0.98 ? p.id === 19 : fx > 0.98 ? p.id === 20 : false,
-      );
+    //選定手指當作傳入豎琴判斷的節點
+    const ACTIVATE_THRESHOLD = 0.98;
+    const fingerPoints = [];
+
+    const hands = latestHandResults?.multiHandLandmarks || [];
+    const leftWrist = displayLandmarks[15];
+    const rightWrist = displayLandmarks[16];
+
+    hands.forEach((hand) => {
+      if (!hand?.[0] || !hand?.[8]) return;
+
+      const wrist = hand[0];
+      const tip = hand[8]; // 食指尖
+
+      const dLeft = (wrist.x - leftWrist.x) ** 2 + (wrist.y - leftWrist.y) ** 2;
+      const dRight =
+        (wrist.x - rightWrist.x) ** 2 + (wrist.y - rightWrist.y) ** 2;
+
+      const isLeftHand = dLeft < dRight;
+      const poseWrist = isLeftHand ? leftWrist : rightWrist;
+
+      const active =
+        (fx < -ACTIVATE_THRESHOLD && isLeftHand) ||
+        (fx > ACTIVATE_THRESHOLD && !isLeftHand);
+
+      if (!active) return;
+
+      fingerPoints.push({
+        id: isLeftHand ? 19 : 20,
+        x: (tip.x + poseWrist.x - wrist.x) * canvasElement.width,
+        y: (tip.y + poseWrist.y - wrist.y) * canvasElement.height,
+      });
+    });
 
     if (player && typeof player.getCurrentTime === "function") {
       currentChord = getActiveChord(player.getCurrentTime(), currentMidiData);
