@@ -81,7 +81,7 @@ class Skeleton {
     const nose = landmarks[0];
     if (nose) {
       ctx.beginPath();
-      ctx.arc(nose.x * width, nose.y * height, 10, 0, Math.PI * 2);
+      ctx.arc(nose.x * w, nose.y * h, 10, 0, Math.PI * 2);
       ctx.stroke();
 
       // 畫一個實心小點當鼻子
@@ -92,37 +92,13 @@ class Skeleton {
     // 畫眼睛連線 (Index 2 和 5)
     if (landmarks[2] && landmarks[5]) {
       ctx.beginPath();
-      ctx.moveTo(landmarks[2].x * width, landmarks[2].y * height);
-      ctx.lineTo(landmarks[5].x * width, landmarks[5].y * height);
+      ctx.moveTo(landmarks[2].x * w, landmarks[2].y * h);
+      ctx.lineTo(landmarks[5].x * w, landmarks[5].y * h);
       ctx.stroke();
     }
 
     // --- 3. Palm (手掌) ---
     // 註解：檢查 landmarks[15] 到 [22] 是否存在
-    const handConnections = [
-      [0, 1],
-      [1, 2],
-      [2, 3],
-      [3, 4],
-      [0, 5],
-      [5, 6],
-      [6, 7],
-      [7, 8],
-      [5, 9],
-      [9, 10],
-      [10, 11],
-      [11, 12],
-      [9, 13],
-      [13, 14],
-      [14, 15],
-      [15, 16],
-      [13, 17],
-      [0, 17],
-      [17, 18],
-      [18, 19],
-      [19, 20],
-    ];
-
     const poseLeftWrist = landmarks[15];
     const poseRightWrist = landmarks[16];
 
@@ -143,6 +119,8 @@ class Skeleton {
     const ACTIVATE_THRESHOLD = 0.98;
 
     let hasDrawnHands = false;
+    let seenLeftHand = false;
+    let seenRightHand = false;
 
     if (handLandmarks && handLandmarks.length > 0) {
       handLandmarks.forEach((hand) => {
@@ -156,8 +134,10 @@ class Skeleton {
         const isLeftHand = dLeft < dRight;
         const targetWrist = isLeftHand ? poseLeftWrist : poseRightWrist;
 
-        if (!targetWrist) return;
+        if (isLeftHand) seenLeftHand = true;
+        else seenRightHand = true;
 
+        if (!targetWrist) return;
         hasDrawnHands = true;
 
         const offsetX = targetWrist.x - handWrist.x;
@@ -166,7 +146,7 @@ class Skeleton {
         ctx.strokeStyle = "rgba(255, 253, 183, 0.85)";
         ctx.lineWidth = 3;
 
-        handConnections.forEach(([i, j]) => {
+        this.handConnections.forEach(([i, j]) => {
           const a = hand[i];
           const b = hand[j];
 
@@ -222,6 +202,73 @@ class Skeleton {
           }
         }
       });
+    }
+    //手不見補償
+    if (!seenLeftHand) {
+      this.drawPoseFallbackHand(
+        ctx,
+        landmarks,
+        "left",
+        w,
+        h,
+        Math.abs(currentFx) > ACTIVATE_THRESHOLD,
+      );
+    }
+    if (!seenRightHand) {
+      this.drawPoseFallbackHand(
+        ctx,
+        landmarks,
+        "right",
+        w,
+        h,
+        Math.abs(currentFx) > ACTIVATE_THRESHOLD,
+      );
+    }
+    ctx.restore();
+  }
+  //補償函示
+  drawPoseFallbackHand(ctx, landmarks, side, w, h, showDot = false) {
+    const wrist = landmarks[side === "left" ? 15 : 16];
+    const elbow = landmarks[side === "left" ? 13 : 14];
+
+    if (!wrist || !elbow) return;
+
+    const color = side === "left" ? "#00fbff" : "#1bff01";
+
+    const dx = wrist.x - elbow.x;
+    const dy = wrist.y - elbow.y;
+    const len = Math.hypot(dx, dy) || 1;
+
+    const tipX = wrist.x + (dx / len) * 0.06;
+    const tipY = wrist.y + (dy / len) * 0.06;
+
+    ctx.save();
+
+    // 假中指線
+    ctx.strokeStyle = "rgba(255, 253, 183, 0.65)";
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+    ctx.moveTo(wrist.x * w, wrist.y * h);
+    ctx.lineTo(tipX * w, tipY * h);
+    ctx.stroke();
+
+    // 手腕小點
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.beginPath();
+    ctx.arc(wrist.x * w, wrist.y * h, 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    // threshold 過了才畫大提示點
+    if (showDot) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(tipX * w, tipY * h, 15, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 2;
+      ctx.stroke();
     }
     ctx.restore();
   }
