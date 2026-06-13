@@ -49,12 +49,15 @@ class Harp {
       };
 
       fingerPoints.forEach((finger) => {
+        const fingerID = finger.id || 0;
+        if (fingerID === "leftMiddle" && ![0, 1, 2].includes(i)) {
+          return;
+        }
         const isInside =
           finger.x >= hitbox.minX &&
           finger.x <= hitbox.maxX &&
           finger.y >= hitbox.minY &&
           finger.y <= hitbox.maxY;
-        const fingerID = finger.id || 0;
 
         if (!this.strings[i].wasInside[fingerID] && isInside && canTrigger) {
           this._triggerString(i, currentChord);

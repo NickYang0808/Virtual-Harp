@@ -189,7 +189,7 @@ class Skeleton {
             ctx.arc(
               (fingerTip.x + offsetX) * w,
               (fingerTip.y + offsetY) * h,
-              15,
+              10,
               0,
               Math.PI * 2,
             );
