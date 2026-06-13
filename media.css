@@ -123,7 +123,8 @@ body {
 }
 #composer-slot {
   /* 強制預留高度，避免組件跳出來時推擠排版 */
-  min-height: 350px;
+  min-height: 220px;
+  max-height: 240px;
   width: 100%;
   margin-top: 15px;
   /* 讓它有一點深色底色，即使沒東西時也不會看起來空空的 */
@@ -148,4 +149,32 @@ body {
 /* 7. 滾動條：木質調配色 */
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: var(--wood-light);
+}
+
+/* 右側控制面板：避免內容撐開主畫面 */
+.right-control-panel {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* 縮小音色設定區，讓滑桿放得進去 */
+#composer-slot {
+  min-height: 220px;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+/* 讓豎琴滑桿區塊更緊湊 */
+#harp-controls {
+  padding: 10px !important;
+  margin-top: 10px !important;
+}
+
+#harp-controls .form-label {
+  margin-bottom: 2px;
+}
+
+#harp-controls .form-range {
+  margin-bottom: 8px;
 }
