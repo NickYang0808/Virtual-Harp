@@ -12,12 +12,18 @@ let latestHandResults = null;
 let myHarp = new Harp();
 const mySkeleton = new Skeleton({ color: "rgb(255, 255, 255)", lineWidth: 5 });
 let smoothLandmarks = {};
+let smoothHandLandmarks = {
+  left: null,
+  right: null,
+};
+
 let smoothFrame = {
   center: { x: 0.5, y: 0.5 },
   forward2D: { x: 1, y: 0 },
   stringDir2D: { x: 0, y: 1 },
 };
 const SMOOTH_FACTOR = 0.15;
+const HAND_SMOOTH_FACTOR = 0.25;
 
 // --- 2. 工具函數 (放在最外層，全域可用) ---
 function getYouTubeID(url) {
@@ -237,7 +243,7 @@ async function onResults(results) {
     ctx.restore();
     return;
   }
-
+  //POSE骨架平滑
   if (!canvasCtx || !results.poseLandmarks) return;
   const targetIndices = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 19, 20, 23, 24,
@@ -256,11 +262,19 @@ async function onResults(results) {
       smoothLandmarks[i].x = lerp(smoothLandmarks[i].x, raw.x, SMOOTH_FACTOR);
       smoothLandmarks[i].y = lerp(smoothLandmarks[i].y, raw.y, SMOOTH_FACTOR);
       smoothLandmarks[i].z = lerp(smoothLandmarks[i].z, raw.z, SMOOTH_FACTOR);
+      smoothLandmarks[i].visibility = raw.visibility;
     }
   });
   const displayLandmarks = results.poseLandmarks.map(
     (point, index) => smoothLandmarks[index] || point,
   );
+
+  // 新增：Hands EMA 平滑後的結果
+  const displayHandLandmarks = smoothHands(
+    latestHandResults?.multiHandLandmarks || [],
+    displayLandmarks,
+  );
+
   const rawFrame = computeFrameFromPose(displayLandmarks);
   if (rawFrame) {
     smoothFrame.center.x = lerp(
@@ -299,7 +313,7 @@ async function onResults(results) {
     const ACTIVATE_THRESHOLD = 0.98;
     const fingerPoints = [];
 
-    const hands = latestHandResults?.multiHandLandmarks || [];
+    const hands = displayHandLandmarks;
     const leftWrist = displayLandmarks[15];
     const rightWrist = displayLandmarks[16];
 
@@ -332,13 +346,14 @@ async function onResults(results) {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     if (myHarp) myHarp.update(smoothFrame, fingerPoints, currentChord);
+
     mySkeleton.draw(
       canvasCtx,
       displayLandmarks,
       canvasElement.width,
       canvasElement.height,
       fx,
-      latestHandResults?.multiHandLandmarks,
+      displayHandLandmarks,
     );
     myHarp.draw(
       canvasCtx,
@@ -351,6 +366,67 @@ async function onResults(results) {
 }
 function lerp(start, end, amt) {
   return start + (end - start) * amt;
+}
+// 新增：用 hand[0] 手腕離 Pose 左右手腕的距離，判斷這隻 hand 是左手還右手
+function getHandSide(hand, poseLandmarks) {
+  if (!hand?.[0] || !poseLandmarks?.[15] || !poseLandmarks?.[16]) return null;
+
+  const wrist = hand[0];
+  const leftWrist = poseLandmarks[15];
+  const rightWrist = poseLandmarks[16];
+
+  const dLeft = (wrist.x - leftWrist.x) ** 2 + (wrist.y - leftWrist.y) ** 2;
+  const dRight = (wrist.x - rightWrist.x) ** 2 + (wrist.y - rightWrist.y) ** 2;
+
+  return dLeft < dRight ? "left" : "right";
+}
+
+// 新增：Hands EMA 平滑
+function smoothHands(rawHands, poseLandmarks) {
+  if (!rawHands || rawHands.length === 0) return [];
+
+  const displayHands = [];
+
+  rawHands.forEach((hand) => {
+    if (!hand?.[0]) return;
+
+    const side = getHandSide(hand, poseLandmarks);
+    if (!side) return;
+
+    if (!smoothHandLandmarks[side]) {
+      smoothHandLandmarks[side] = hand.map((p) => ({
+        x: p.x,
+        y: p.y,
+        z: p.z ?? 0,
+      }));
+    } else {
+      hand.forEach((p, i) => {
+        if (!p) return;
+
+        smoothHandLandmarks[side][i].x = lerp(
+          smoothHandLandmarks[side][i].x,
+          p.x,
+          HAND_SMOOTH_FACTOR,
+        );
+
+        smoothHandLandmarks[side][i].y = lerp(
+          smoothHandLandmarks[side][i].y,
+          p.y,
+          HAND_SMOOTH_FACTOR,
+        );
+
+        smoothHandLandmarks[side][i].z = lerp(
+          smoothHandLandmarks[side][i].z,
+          p.z ?? 0,
+          HAND_SMOOTH_FACTOR,
+        );
+      });
+    }
+
+    displayHands.push(smoothHandLandmarks[side]);
+  });
+
+  return displayHands;
 }
 function computeFrameFromPose(landmarks) {
   const p11 = landmarks[11],

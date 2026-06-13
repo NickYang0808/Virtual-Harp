@@ -304,6 +304,7 @@ class Skeleton {
       ctx.lineWidth = 2;
       ctx.stroke();
     }
+
     ctx.restore();
   }
 }
