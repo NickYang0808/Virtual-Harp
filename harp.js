@@ -50,7 +50,7 @@ class Harp {
 
       fingerPoints.forEach((finger) => {
         const fingerID = finger.id || 0;
-        if (fingerID === "leftMiddle" && ![0, 1, 2].includes(i)) {
+        if (fingerID === "leftMiddle" && ![4, 5, 6].includes(i)) {
           return;
         }
         const isInside =
