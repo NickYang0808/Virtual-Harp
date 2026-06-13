@@ -304,10 +304,10 @@ async function onResults(results) {
     const rightWrist = displayLandmarks[16];
 
     hands.forEach((hand) => {
-      if (!hand?.[0] || !hand?.[8]) return;
+      if (!hand?.[0] || !hand?.[12]) return;
 
       const wrist = hand[0];
-      const tip = hand[8]; // 食指尖
+      const tip = hand[12]; // 中指尖
 
       const dLeft = (wrist.x - leftWrist.x) ** 2 + (wrist.y - leftWrist.y) ** 2;
       const dRight =
@@ -316,14 +316,10 @@ async function onResults(results) {
       const isLeftHand = dLeft < dRight;
       const poseWrist = isLeftHand ? leftWrist : rightWrist;
 
-      const active =
-        (fx < -ACTIVATE_THRESHOLD && isLeftHand) ||
-        (fx > ACTIVATE_THRESHOLD && !isLeftHand);
-
       if (!active) return;
 
       fingerPoints.push({
-        id: isLeftHand ? 19 : 20,
+        id: isLeftHand ? "leftMiddle" : "rightMiddle",
         x: (tip.x + poseWrist.x - wrist.x) * canvasElement.width,
         y: (tip.y + poseWrist.y - wrist.y) * canvasElement.height,
       });

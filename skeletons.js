@@ -195,19 +195,12 @@ class Skeleton {
         });
 
         // --- 4. Hand 紅綠點，優先畫在 Hands 的食指尖 ---
-        const fingerTip = hand[8];
+        const fingerTip = hand[12];
 
         if (fingerTip) {
-          let shouldDraw = false;
-          let color = "white";
+          const shouldDraw = Math.abs(currentFx) > ACTIVATE_THRESHOLD;
 
-          if (currentFx < -ACTIVATE_THRESHOLD && isLeftHand) {
-            shouldDraw = true;
-            color = "#FF0000";
-          } else if (currentFx > ACTIVATE_THRESHOLD && !isLeftHand) {
-            shouldDraw = true;
-            color = "#00fbff";
-          }
+          const color = isLeftHand ? "#00fbff" : "#1bff01";
 
           if (shouldDraw) {
             ctx.save();
