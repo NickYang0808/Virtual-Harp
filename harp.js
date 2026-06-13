@@ -53,6 +53,9 @@ class Harp {
         if (fingerID === "leftMiddle" && ![4, 5, 6].includes(i)) {
           return;
         }
+        if (fingerID === "rightMiddle" && ![0, 1, 2, 3, 4].includes(i)) {
+          return;
+        }
         const isInside =
           finger.x >= hitbox.minX &&
           finger.x <= hitbox.maxX &&
