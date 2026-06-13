@@ -7,9 +7,19 @@ class Harp {
     this.spacing = config.spacing || 0.06;
     this.length = config.length || 0.7;
     this.baseOffset = config.baseOffset || 0.3; // 固定距離
+    this.yOffset = config.yOffset || 0; //琴弦高度
     this.hitboxMargin = 0.008;
     this.stringTriggerCooldown = 30;
     this.lastTriggerTime = 0;
+
+    this.strings = Array.from({ length: this.stringCount }, () => ({
+      brightness: 0,
+      offset: 0,
+      wasInside: {},
+    }));
+  }
+  setStringCount(count) {
+    this.stringCount = count;
 
     this.strings = Array.from({ length: this.stringCount }, () => ({
       brightness: 0,
@@ -50,10 +60,11 @@ class Harp {
 
       fingerPoints.forEach((finger) => {
         const fingerID = finger.id || 0;
-        if (fingerID === "leftMiddle" && ![4, 5, 6].includes(i)) {
+        if (fingerID === "leftMiddle" && i < this.stringCount - 3) {
           return;
         }
-        if (fingerID === "rightMiddle" && ![0, 1, 2, 3].includes(i)) {
+
+        if (fingerID === "rightMiddle" && i > 3) {
           return;
         }
         const isInside =
@@ -106,7 +117,8 @@ class Harp {
         (this.spacing * index + this.baseOffset + visualOffset);
     const py =
       frame.center.y +
-      frame.forward2D.y * (this.spacing * index + this.baseOffset);
+      frame.forward2D.y * (this.spacing * index + this.baseOffset) +
+      this.yOffset;
     // 定義向上與向下的延伸比例 (總長度為 this.length)
     const upRatio = 0.8;
     const downRatio = 0.2;

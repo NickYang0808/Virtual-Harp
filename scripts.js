@@ -194,6 +194,7 @@ window.onload = () => {
     height: 640,
   });
   camera.start();
+  setupHarpControls(); //綁定搖桿的控制參數
 
   // 監聽選單
   const selector = document.getElementById("songSelector");
@@ -457,4 +458,42 @@ function computeFrameFromPose(landmarks) {
   const stringDir2D =
     magS < 1e-6 ? { x: 0, y: 1 } : { x: vS.x / magS, y: vS.y / magS };
   return { center, forward2D, stringDir2D };
+}
+
+function setupHarpControls() {
+  const stringCountSlider = document.getElementById("stringCountSlider");
+  const spacingSlider = document.getElementById("spacingSlider");
+  const baseOffsetSlider = document.getElementById("baseOffsetSlider");
+  const yOffsetSlider = document.getElementById("yOffsetSlider");
+
+  const stringCountValue = document.getElementById("stringCountValue");
+  const spacingValue = document.getElementById("spacingValue");
+  const baseOffsetValue = document.getElementById("baseOffsetValue");
+  const yOffsetValue = document.getElementById("yOffsetValue");
+
+  if (!myHarp) return;
+
+  stringCountSlider.addEventListener("input", () => {
+    const value = Number(stringCountSlider.value);
+    myHarp.setStringCount(value);
+    stringCountValue.textContent = value;
+  });
+
+  spacingSlider.addEventListener("input", () => {
+    const value = Number(spacingSlider.value);
+    myHarp.spacing = value;
+    spacingValue.textContent = value.toFixed(3);
+  });
+
+  baseOffsetSlider.addEventListener("input", () => {
+    const value = Number(baseOffsetSlider.value);
+    myHarp.baseOffset = value;
+    baseOffsetValue.textContent = value.toFixed(3);
+  });
+
+  yOffsetSlider.addEventListener("input", () => {
+    const value = Number(yOffsetSlider.value);
+    myHarp.yOffset = value;
+    yOffsetValue.textContent = value.toFixed(3);
+  });
 }
