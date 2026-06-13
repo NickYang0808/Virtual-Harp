@@ -163,7 +163,7 @@ class Skeleton {
         const offsetX = targetWrist.x - handWrist.x;
         const offsetY = targetWrist.y - handWrist.y;
 
-        ctx.strokeStyle = "rgba(0, 255, 255, 0.85)";
+        ctx.strokeStyle = "rgba(255, 253, 183, 0.85)";
         ctx.lineWidth = 3;
 
         handConnections.forEach(([i, j]) => {
