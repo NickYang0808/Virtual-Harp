@@ -206,7 +206,7 @@ class Skeleton {
             color = "#FF0000";
           } else if (currentFx > ACTIVATE_THRESHOLD && !isLeftHand) {
             shouldDraw = true;
-            color = "#00FF00";
+            color = "#00fbff";
           }
 
           if (shouldDraw) {
@@ -223,7 +223,7 @@ class Skeleton {
             ctx.fill();
 
             ctx.strokeStyle = "white";
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             ctx.stroke();
             ctx.restore();
           }
