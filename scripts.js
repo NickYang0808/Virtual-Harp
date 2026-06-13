@@ -23,7 +23,7 @@ let smoothFrame = {
   stringDir2D: { x: 0, y: 1 },
 };
 const SMOOTH_FACTOR = 0.15;
-const HAND_SMOOTH_FACTOR = 0.2;
+const HAND_SMOOTH_FACTOR = 0.175;
 
 // --- 2. 工具函數 (放在最外層，全域可用) ---
 function getYouTubeID(url) {
