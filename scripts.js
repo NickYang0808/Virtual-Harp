@@ -316,8 +316,6 @@ async function onResults(results) {
       const isLeftHand = dLeft < dRight;
       const poseWrist = isLeftHand ? leftWrist : rightWrist;
 
-      if (!active) return;
-
       fingerPoints.push({
         id: isLeftHand ? "leftMiddle" : "rightMiddle",
         x: (tip.x + poseWrist.x - wrist.x) * canvasElement.width,
