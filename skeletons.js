@@ -235,35 +235,69 @@ class Skeleton {
 
     const color = side === "left" ? "#00fbff" : "#1bff01";
 
+    // 前臂方向：手肘 -> 手腕 -> 手指方向
     const dx = wrist.x - elbow.x;
     const dy = wrist.y - elbow.y;
     const len = Math.hypot(dx, dy) || 1;
 
-    const tipX = wrist.x + (dx / len) * 0.06;
-    const tipY = wrist.y + (dy / len) * 0.06;
+    const ux = dx / len;
+    const uy = dy / len;
+
+    // 垂直方向，用來把五根手指散開
+    const px = -uy;
+    const py = ux;
+
+    const fingerLength = 0.07;
+    const spread = 0.018;
+
+    // 五根手指，第三根當中指
+    const fingers = [
+      { scale: 0.75, side: -2 },
+      { scale: 0.95, side: -1 },
+      { scale: 1.15, side: 0 }, // 中指
+      { scale: 0.95, side: 1 },
+      { scale: 0.75, side: 2 },
+    ];
 
     ctx.save();
 
-    // 假中指線
     ctx.strokeStyle = "rgba(255, 253, 183, 0.65)";
     ctx.lineWidth = 3;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.55)";
 
+    // 手腕點
     ctx.beginPath();
-    ctx.moveTo(wrist.x * w, wrist.y * h);
-    ctx.lineTo(tipX * w, tipY * h);
-    ctx.stroke();
-
-    // 手腕小點
-    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-    ctx.beginPath();
-    ctx.arc(wrist.x * w, wrist.y * h, 6, 0, Math.PI * 2);
+    ctx.arc(wrist.x * w, wrist.y * h, 7, 0, Math.PI * 2);
     ctx.fill();
 
-    // threshold 過了才畫大提示點
-    if (showDot) {
+    let middleTip = null;
+
+    fingers.forEach((finger, index) => {
+      const tipX =
+        wrist.x + ux * fingerLength * finger.scale + px * spread * finger.side;
+
+      const tipY =
+        wrist.y + uy * fingerLength * finger.scale + py * spread * finger.side;
+
+      if (index === 2) {
+        middleTip = { x: tipX, y: tipY };
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(wrist.x * w, wrist.y * h);
+      ctx.lineTo(tipX * w, tipY * h);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(tipX * w, tipY * h, 4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // 過 threshold 才畫中指大點
+    if (showDot && middleTip) {
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(tipX * w, tipY * h, 15, 0, Math.PI * 2);
+      ctx.arc(middleTip.x * w, middleTip.y * h, 15, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.strokeStyle = "white";
