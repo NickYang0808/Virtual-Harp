@@ -4,7 +4,7 @@
 class Harp {
   constructor(config = {}) {
     this.stringCount = config.stringCount || 7;
-    this.spacing = config.spacing || 0.06;
+    this.spacing = config.spacing || 0.04;
     this.length = config.length || 0.7;
     this.baseOffset = config.baseOffset || 0.3; // 固定距離
     this.yOffset = config.yOffset || 0; //琴弦高度
