@@ -179,15 +179,52 @@ body {
   margin-bottom: 8px;
 }
 
+/* 左下角歌曲分析入口按鈕 */
+#open-song-analyzer-btn {
+  border-radius: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.12s ease;
+}
+
+#open-song-analyzer-btn:hover {
+  box-shadow: 0 0 12px rgba(13, 202, 240, 0.65);
+}
+
+#open-song-analyzer-btn:active {
+  transform: scale(0.92);
+}
+
+/* 中央歌曲分析副視窗 */
+.song-analyzer-modal {
+  background: rgba(24, 24, 24, 0.96);
+  border: 1px solid rgba(13, 202, 240, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 0 30px rgba(13, 202, 240, 0.25);
+}
+
+/* YouTube URL 輸入框 */
+.song-url-input {
+  width: 70%;
+  height: 38px;
+  background-color: rgba(255, 255, 255, 0.92);
+}
+
 /* YouTube 播放按鈕 */
 #play-youtube-btn {
+  width: 15%;
+  height: 38px;
+
   background-color: #ff0000 !important;
   border-color: #ff0000 !important;
   color: white !important;
 
   border-radius: 8px;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.1rem;
 
   transition:
     transform 0.12s ease,
@@ -197,15 +234,31 @@ body {
   box-shadow: 0 0 8px rgba(255, 0, 0, 0.45);
 }
 
-/* 滑鼠移上去 */
 #play-youtube-btn:hover {
   background-color: #e60000 !important;
   border-color: #e60000 !important;
   box-shadow: 0 0 14px rgba(255, 0, 0, 0.75);
 }
 
-/* 按下去縮小，放開會回彈 */
 #play-youtube-btn:active {
   transform: scale(0.88);
   box-shadow: 0 0 4px rgba(255, 0, 0, 0.5);
+}
+
+/* 分析歌曲按鈕 */
+#analyze-song-btn {
+  border-radius: 10px;
+  font-weight: 700;
+  min-width: 140px;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+#analyze-song-btn:hover {
+  box-shadow: 0 0 14px rgba(13, 202, 240, 0.65);
+}
+
+#analyze-song-btn:active {
+  transform: scale(0.92);
 }

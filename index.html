@@ -93,43 +93,14 @@
 
             <!-- 左邊：跟上面的 side-panel 一樣寬 -->
             <div class="col-lg-2 col-md-4 h-100">
-                <div class="bottom-left-panel h-100 rounded shadow-sm bg-black bg-opacity-25 border border-secondary border-opacity-25 position-relative">
+                <div class="bottom-left-panel h-100 rounded shadow-sm bg-black bg-opacity-25 border border-secondary border-opacity-25 d-flex align-items-center justify-content-center">
 
-                    <!-- 標題：置中，上方 1/7 位置 -->
-                    <h6 class="text-info text-center position-absolute w-100"
-                        style="top: 14%; left: 0;">
-                        歌曲分析區
-                    </h6>
-
-                    <!-- YouTube 輸入框 + 播放按鈕 -->
-                    <div class="position-absolute d-flex"
-                        style="top: 34%; left: 7.5%; width: 85%; height: 38px;">
-
-                        <input id="youtube-url-input"
-                            type="text"
-                            class="form-control form-control-sm"
-                            placeholder="貼上 YouTube URL"
-                            style="width: 82.35%; height: 100%;">
-
-                        <button id="play-youtube-btn"
-                            class="btn btn-outline-info btn-sm ms-1 d-flex align-items-center justify-content-center"
-                            style="width: 17.65%; height: 100%; padding: 0;">
-                            ▶
-                        </button>
-
-                    </div>
-
-                    <!-- 分析歌曲按鈕：剩下空間置中 -->
-                    <div class="position-absolute w-100 d-flex justify-content-center"
-                        style="top: 68%; left: 0;">
-
-                        <button id="analyze-song-btn"
-                            class="btn btn-info btn-sm px-4 shadow-sm">
-                            分析歌曲
-                        </button>
-
-                    </div>
-
+                    <button id="open-song-analyzer-btn"
+                        class="btn btn-outline-info btn-sm px-3 py-2 shadow-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#songAnalyzerModal">
+                        🎵 歌曲分析
+                    </button>
                 </div>
             </div>
 
@@ -146,6 +117,59 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="songAnalyzerModal" tabindex="-1" aria-labelledby="songAnalyzerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content song-analyzer-modal">
+
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-info w-100 text-center" id="songAnalyzerModalLabel">
+                        歌曲分析區
+                    </h5>
+
+                    <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="d-flex justify-content-center align-items-center mb-4">
+                        <input id="youtube-url-input"
+                            type="text"
+                            class="form-control form-control-sm song-url-input"
+                            placeholder="貼上 YouTube URL">
+
+                        <button id="play-youtube-btn"
+                            class="btn btn-sm ms-2 d-flex align-items-center justify-content-center"
+                            type="button">
+                            ▶
+                        </button>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button id="analyze-song-btn"
+                            class="btn btn-info btn-sm px-4 py-2 shadow-sm"
+                            type="button">
+
+                            <span id="analyze-spinner"
+                                class="spinner-border spinner-border-sm me-2 d-none"
+                                role="status"
+                                aria-hidden="true">
+                            </span>
+
+                            <span id="analyze-btn-text">分析歌曲</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
