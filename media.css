@@ -178,3 +178,34 @@ body {
 #harp-controls .form-range {
   margin-bottom: 8px;
 }
+
+/* YouTube 播放按鈕 */
+#play-youtube-btn {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: white !important;
+
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+
+  transition:
+    transform 0.12s ease,
+    background-color 0.12s ease,
+    box-shadow 0.12s ease;
+
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.45);
+}
+
+/* 滑鼠移上去 */
+#play-youtube-btn:hover {
+  background-color: #e60000 !important;
+  border-color: #e60000 !important;
+  box-shadow: 0 0 14px rgba(255, 0, 0, 0.75);
+}
+
+/* 按下去縮小，放開會回彈 */
+#play-youtube-btn:active {
+  transform: scale(0.88);
+  box-shadow: 0 0 4px rgba(255, 0, 0, 0.5);
+}
