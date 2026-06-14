@@ -93,8 +93,43 @@
 
             <!-- 左邊：跟上面的 side-panel 一樣寬 -->
             <div class="col-lg-2 col-md-4 h-100">
-                <div class="bottom-left-panel h-100 rounded shadow-sm bg-black bg-opacity-25 border border-secondary border-opacity-25">
-                    <!-- 這裡可以放你要的內容 -->
+                <div class="bottom-left-panel h-100 rounded shadow-sm bg-black bg-opacity-25 border border-secondary border-opacity-25 position-relative">
+
+                    <!-- 標題：置中，上方 1/7 位置 -->
+                    <h6 class="text-info text-center position-absolute w-100"
+                        style="top: 14%; left: 0;">
+                        歌曲分析區
+                    </h6>
+
+                    <!-- YouTube 輸入框 + 播放按鈕 -->
+                    <div class="position-absolute d-flex"
+                        style="top: 34%; left: 7.5%; width: 85%; height: 38px;">
+
+                        <input id="youtube-url-input"
+                            type="text"
+                            class="form-control form-control-sm"
+                            placeholder="貼上 YouTube URL"
+                            style="width: 82.35%; height: 100%;">
+
+                        <button id="play-youtube-btn"
+                            class="btn btn-outline-info btn-sm ms-1 d-flex align-items-center justify-content-center"
+                            style="width: 17.65%; height: 100%; padding: 0;">
+                            ▶
+                        </button>
+
+                    </div>
+
+                    <!-- 分析歌曲按鈕：剩下空間置中 -->
+                    <div class="position-absolute w-100 d-flex justify-content-center"
+                        style="top: 68%; left: 0;">
+
+                        <button id="analyze-song-btn"
+                            class="btn btn-info btn-sm px-4 shadow-sm">
+                            分析歌曲
+                        </button>
+
+                    </div>
+
                 </div>
             </div>
 
