@@ -45,7 +45,7 @@ const IMUSE_SONGS = [
     url: "./midi/天鵝.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=C7iPKpr9XeY",
     firstBeatOffset: 1,
-    scene: "night",
+    scene: "swan",
   },
   {
     title: "車站",

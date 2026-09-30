@@ -38,7 +38,9 @@ body.happy {
 body.station {
   background-image: url("assets/station.webp");
 }
-
+body.swan {
+  background-image: url("assets/swan.jpeg");
+}
 body {
   background-image: url("assets/night.webp");
 
