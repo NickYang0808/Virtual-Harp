@@ -44,7 +44,7 @@ const IMUSE_SONGS = [
     category: "古典歌曲",
     url: "./midi/天鵝.mid",
     youtubeUrl: "https://www.youtube.com/watch?v=C7iPKpr9XeY",
-    firstBeatOffset: 1,
+    firstBeatOffset: 5.1,
     scene: "swan",
   },
   {
