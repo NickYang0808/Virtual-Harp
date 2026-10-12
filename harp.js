@@ -1,105 +1,97 @@
 /**
- * Harp.js - 虛擬豎琴邏輯封裝 (標準穩定版)
+ * Harp.js - 虛擬豎琴邏輯封裝 (精簡高效穩定版)
  */
 class Harp {
   constructor(config = {}) {
     this.stringCount = config.stringCount || 7;
     this.spacing = config.spacing || 0.04;
     this.length = config.length || 0.7;
-    this.baseOffset = config.baseOffset || 0.3; // 固定距離
-    this.yOffset = config.yOffset || 0; //琴弦高度
-    this.hitboxMargin = 0.008;
+    this.baseOffset = config.baseOffset || 0.3;
+    this.yOffset = config.yOffset || 0;
     this.stringTriggerCooldown = 30;
     this.lastTriggerTime = 0;
 
+    this.initStrings();
+  }
+
+  initStrings() {
     this.strings = Array.from({ length: this.stringCount }, () => ({
       brightness: 0,
       offset: 0,
       wasInside: {},
     }));
   }
+
   setStringCount(count) {
     this.stringCount = count;
-
-    this.strings = Array.from({ length: this.stringCount }, () => ({
-      brightness: 0,
-      offset: 0,
-      wasInside: {},
-    }));
+    this.initStrings();
   }
-  noteAnimation(type, position) {
-    this.particles.push({
-      type: type,
-      x: position.x,
-      y: position.y,
-      vx: (Math.random() - 0.5) * 4, // 隨機水平速度
-      vy: (Math.random() - 0.5) * 4, // 隨機垂直速度
-      alpha: 1.0,
-      life: 1.0,
-      scale: 0.5 + Math.random() * 0.5,
-    });
+
+  // 尋找給定 X/Y 座標最接近的有效琴弦 (Plucking 掌心定位使用)
+  getClosestStringIndex(point, frame) {
+    let closest = -1, minDist = 35; // 限制 35px 內才算命中
+
+    for (let i = 0; i < this.stringCount; i++) {
+      const pos = this._calculateStringPos(frame, i - Math.floor(this.stringCount / 2), 0);
+      const stringX = ((pos.x1 + pos.x2) / 2) * 1280;
+
+      // 檢查 Y 軸是否在琴弦有效長度範圍內
+      if (point.y >= (Math.min(pos.y1, pos.y2) - 0.05) * 640 && point.y <= (Math.max(pos.y1, pos.y2) + 0.05) * 640) {
+        const dist = Math.abs(point.x - stringX);
+        if (dist < minDist) {
+          minDist = dist;
+          closest = i;
+        }
+      }
+    }
+    return closest;
   }
 
   update(frame, fingerPoints, currentChord) {
     const now = Date.now();
     const canTrigger = now - this.lastTriggerTime > this.stringTriggerCooldown;
+    const splitIndex = Math.floor(this.stringCount / 2);
+    const margin = Math.max(0.004, this.spacing * 0.4);
 
     for (let i = 0; i < this.stringCount; i++) {
       this.strings[i].brightness *= 0.85;
       this.strings[i].offset *= 0.6;
 
-      const stringIndex = i - Math.floor(this.stringCount / 2);
-      const pos = this._calculateStringPos(frame, stringIndex, 0);
-
-      const hitbox = {
-        minX: (Math.min(pos.x1, pos.x2) - this.hitboxMargin) * 1280,
-        maxX: (Math.max(pos.x1, pos.x2) + this.hitboxMargin) * 1280,
-        minY: (Math.min(pos.y1, pos.y2) - 0.05) * 640,
-        maxY: (Math.max(pos.y1, pos.y2) + 0.05) * 640,
-      };
+      const pos = this._calculateStringPos(frame, i - splitIndex, 0);
+      const minX = (Math.min(pos.x1, pos.x2) - margin) * 1280;
+      const maxX = (Math.max(pos.x1, pos.x2) + margin) * 1280;
+      const minY = (Math.min(pos.y1, pos.y2) - 0.05) * 640;
+      const maxY = (Math.max(pos.y1, pos.y2) + 0.05) * 640;
 
       fingerPoints.forEach((finger) => {
-        const fingerID = finger.id || 0;
-        if (fingerID === "leftMiddle" && i < this.stringCount - 3) {
-          return;
-        }
+        const id = finger.id || 0;
+        // 左右手前後分界過濾
+        if ((id === "rightMiddle" && i > splitIndex) || (id === "leftMiddle" && i < splitIndex)) return;
 
-        if (fingerID === "rightMiddle" && i > 3) {
-          return;
-        }
-        const isInside =
-          finger.x >= hitbox.minX &&
-          finger.x <= hitbox.maxX &&
-          finger.y >= hitbox.minY &&
-          finger.y <= hitbox.maxY;
+        const isInside = finger.x >= minX && finger.x <= maxX && finger.y >= minY && finger.y <= maxY;
 
-        if (!this.strings[i].wasInside[fingerID] && isInside && canTrigger) {
-          this._triggerString(i, currentChord);
+        if (!this.strings[i].wasInside[id] && isInside && canTrigger) {
+          this._triggerStrings([i], currentChord);
           this.lastTriggerTime = now;
         }
-        this.strings[i].wasInside[fingerID] = isInside;
+        this.strings[i].wasInside[id] = isInside;
       });
     }
   }
 
   draw(ctx, frame, canvasWidth, canvasHeight) {
-    for (let i = 0; i < this.stringCount; i++) {
-      const stringIndex = i - Math.floor(this.stringCount / 2);
-      const { brightness, offset } = this.strings[i];
-      const pos = this._calculateStringPos(frame, stringIndex, offset);
+    const halfCount = Math.floor(this.stringCount / 2);
 
-      const r = 255;
-      const g = 255;
-      const b = 255;
+    for (let i = 0; i < this.stringCount; i++) {
+      const { brightness, offset } = this.strings[i];
+      const pos = this._calculateStringPos(frame, i - halfCount, offset);
 
       ctx.beginPath();
       ctx.moveTo(pos.x1 * canvasWidth, pos.y1 * canvasHeight);
       ctx.lineTo(pos.x2 * canvasWidth, pos.y2 * canvasHeight);
       ctx.lineWidth = 1.5 + brightness * 3;
-      ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+      ctx.strokeStyle = "rgb(255, 255, 255)";
 
-      //light
-      // 選用：加入發光外框 (Glow)，會讓黃色看起來更像在發亮
       if (brightness > 0.1) {
         ctx.shadowBlur = 10 * brightness;
         ctx.shadowColor = `rgba(255, 255, 0, ${brightness})`;
@@ -111,54 +103,34 @@ class Harp {
   }
 
   _calculateStringPos(frame, index, visualOffset = 0) {
-    const px =
-      frame.center.x +
-      frame.forward2D.x *
-        (this.spacing * index + this.baseOffset + visualOffset);
-    const py =
-      frame.center.y +
-      frame.forward2D.y * (this.spacing * index + this.baseOffset) +
-      this.yOffset;
-    // 定義向上與向下的延伸比例 (總長度為 this.length)
-    const upRatio = 0.8;
-    const downRatio = 0.2;
-    return {
-      // 起點 (x1, y1)：從中心點往「反方向 (上)」延伸 70% 的長度
-      x1:
-        px -
-        frame.stringDir2D.x * (this.length * upRatio) +
-        visualOffset * frame.forward2D.y,
-      y1:
-        py -
-        frame.stringDir2D.y * (this.length * upRatio) -
-        visualOffset * frame.forward2D.x,
+    const px = frame.center.x + frame.forward2D.x * (this.spacing * index + this.baseOffset + visualOffset);
+    const py = frame.center.y + frame.forward2D.y * (this.spacing * index + this.baseOffset) + this.yOffset;
+    const lenUp = this.length * 0.8;
+    const lenDown = this.length * 0.2;
 
-      // 終點 (x2, y2)：從中心點往「正方向 (下)」延伸 30% 的長度
-      x2:
-        px +
-        frame.stringDir2D.x * (this.length * downRatio) +
-        visualOffset * frame.forward2D.y,
-      y2:
-        py +
-        frame.stringDir2D.y * (this.length * downRatio) -
-        visualOffset * frame.forward2D.x,
+    return {
+      x1: px - frame.stringDir2D.x * lenUp + visualOffset * frame.forward2D.y,
+      y1: py - frame.stringDir2D.y * lenUp - visualOffset * frame.forward2D.x,
+      x2: px + frame.stringDir2D.x * lenDown + visualOffset * frame.forward2D.y,
+      y2: py + frame.stringDir2D.y * lenDown - visualOffset * frame.forward2D.x,
     };
   }
 
+  // 單音觸發直接復用多音邏輯
   _triggerString(index, chord) {
-    //寫和弦四音對應mapping 7弦處
-    chord = mappingToString(chord);
-    const note = Array.isArray(chord) ? chord[index] : null;
+    this._triggerStrings([index], chord);
+  }
 
-    if (note) {
-      sendMidiToSynth(note);
-      //debug用
-      console.log(`撥動${index}弦，音高${note}`);
-      //開啟動畫時間
-      // this.activeAnimationTime = Date.now();
-    }
-    //visual feedback
-    this.strings[index].brightness = 1.0;
-    this.strings[index].offset = (Math.random() - 0.5) * 0.02;
+  // 統一琴弦發聲與震動邏輯 (支援單音、雙音合聲)
+  _triggerStrings(indices, chord) {
+    const notes = mappingToString(chord, this.stringCount);
+
+    indices.forEach((index) => {
+      if (index >= 0 && index < this.stringCount) {
+        if (notes?.[index]) sendMidiToSynth(notes[index]);
+        this.strings[index].brightness = 1.0;
+        this.strings[index].offset = (Math.random() - 0.5) * 0.02;
+      }
+    });
   }
 }
